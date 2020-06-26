@@ -1,0 +1,33 @@
+Names,Source,Frequency,FirstPeriod,LastPeriod,Description
+eps_1yr_ahead,"ThomsonReuters I/B/E/S",monthly,01-Jun-1992,01-Jan-2020,Mean analyst forecast for Earnings per share for the S&P500 over the next 12 months
+eps_2yr_ahead,"ThomsonReuters I/B/E/S",monthly,01-Jun-1992,01-Jan-2020,Mean analyst forecast for Earnings per share for the S&P500 over the next 24 months
+eps_3yr_ahead,"ThomsonReuters I/B/E/S",monthly,01-Jun-1992,01-Jan-2020,Mean analyst forecast for Earnings per share for the S&P500 over the next 36 months
+eps_4yr_ahead,"ThomsonReuters I/B/E/S",monthly,01-Jun-1992,01-Jan-2020,Mean analyst forecast for Earnings per share for the S&P500 over the next 48 months
+dp,"Shiller",monthly,01-Jan-1900,01-Jan-2020,Dividend price ratio
+ep,"Shiller",monthly,01-Jan-1900,01-Jan-2020,Earnings price ratio
+inflation,"Shiller",monthly,01-Jan-1900,01-Feb-2020,Log change in CPI
+term_spread,"Fed Board",monthly,01-Sep-1971,01-Mar-2020,10 year minus 1 year yield
+share_equity_issuance,"Jeffrey Wurgler",monthly,01-Jan-1958,01-Dec-2018,Share of equity issuance
+book_per_share,"Compustat",monthly,01-Jan-1977,01-Feb-2019,Assign to each month of the year the value of books_per_share in December of the same year (as in Goyal and Welch)
+lag_book_per_share,"Compustat",monthly,01-Jan-1978,01-Feb-2020,Assign to each month of the year the value of books_per_share in December of the previous year
+book_equity,"Compustat",monthly,01-Jan-1978,01-Feb-2020,Is the same as lag_book_per_share (created to follow Campbell Thompson names)
+real_book_equity,"Compustat and Shiller",monthly,01-Jan-1978,01-Feb-2020,book_equity/CPI
+bm,"Compustat",monthly,01-Jan-1978,01-Feb-2020,lag_book_per_share divided by sp500_price
+smooth_EP,"Shiller",monthly,01-Jan-1900,01-Feb-2020,1/CAPE
+roe,"Compustat and Shiller",monthly,01-Dec-1987,01-Dec-2019,real return on equity
+real_rf_mean,"Fama-French and Shiller",monthly,01-Jan-1900,01-Feb-2020,Historical average of the real risk free rate
+payout_mean,"Shiller",monthly,01-Jan-1900,01-Dec-2019,Historical average of the payout ratio D/E
+real_earnings_gr_mean,"Shiller",monthly,01-Jan-1900,01-Nov-2019,Historical average of real earnings growth
+dp_growth_adj,"Compustat and Shiller",monthly,01-Dec-1987,01-Dec-2019,Growth-adjusted dividend-price ratio
+ep_growth_adj,"Compustat and Shiller",monthly,01-Dec-1987,01-Dec-2019,Growth-adjusted earnings-price ratio
+smooth_ep_growth_adj,"Compustat and Shiller",monthly,01-Dec-1987,01-Dec-2019,Growth-adjusted smooth earnings-price ratio
+bm_growth_adj,"Compustat and Shiller",monthly,01-Dec-1987,01-Dec-2019,Growth-adjusted book-to-market ratio
+dp_growth_adj_rf,"Compustat, Shiller and Fama-French",monthly,01-Dec-1987,01-Dec-2019,Growth-adjusted dividend-price ratio minus the risk-free rate
+ep_growth_adj_rf,"Compustat, Shiller and Fama-French",monthly,01-Dec-1987,01-Dec-2019,Growth-adjusted earnings-price ratio minus the risk-free rate
+smooth_ep_growth_adj_rf,"Compustat, Shiller and Fama-French",monthly,01-Dec-1987,01-Dec-2019,Growth-adjusted smooth earnings-price ratio minus the risk-free rate
+bm_growth_adj_rf,"Compustat, Shiller and Fama-French",monthly,01-Dec-1987,01-Dec-2019,Growth-adjusted book-to-market ratio minus the risk-free rate
+real_D_growth,"Shiller",monthly,01-Jan-1900,01-Dec-2019,Growth rate of real dividends
+real_E_growth,"Shiller",monthly,01-Jan-1900,01-Dec-2019,Growth rate of real earnings
+real_P_growth,"Shiller",monthly,01-Jan-1900,01-Feb-2020,Growth rate of the real price of the S&P500 (i.e. ex-dividend returns)
+dividend_yield,"Shiller",monthly,01-Jan-1900,01-Dec-2019,Dividend divided by lagged S&P500 price
+realized_erp,"Shiller",monthly,01-Jul-1926,01-Dec-2019,Realized excess market returns (cum dividend)

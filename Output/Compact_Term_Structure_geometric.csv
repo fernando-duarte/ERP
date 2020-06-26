@@ -1,0 +1,7 @@
+Row,one_month_ahead,one_quarter_ahead,six_months_ahead,one_year_ahead,two_years_ahead,three_years_ahead,four_years_ahead,five_years_ahead
+01-Jan-1960,NaN,-7.18,-11.62,-7.08,NaN,-6.85,-13.75,-22.11
+01-Feb-1960,NaN,-6.26,-11.73,-6.98,NaN,-6.82,-13.73,-21.89
+01-Mar-1960,NaN,NaN,-11.32,-5.74,NaN,-6.74,-13.54,-21.32
+01-Apr-1960,NaN,NaN,-10.38,-5.6,-3.01,-6.65,-13.16,-21.36
+mean,6.03,6.49,5.91,4.1,4.02,3.65,2.5,1.11
+zeros,0,0,0,0,0,0,0,0

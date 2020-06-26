@@ -1,0 +1,11 @@
+Row,One_month,One_quarter,Six_months,One_year,Two_years,Three_years,Four_years,Five_years
+historical mean,-0.02,0,0.07,0.15,0.41,0.4,0.28,
+name1,historical mean as far back as data allows,historical mean using last five years,historical mean using last five years,historical mean as far back as data allows,historical mean as far back as data allows,historical mean as far back as data allows,historical mean as far back as data allows,historical mean as far back as data allows
+ddm,0.13,0.04,0.15,0.32,0.61,0.79,0.81,
+name2,6 stage free cash flow DDM by Damodaran,E/P minus real 10yr yield,expected E/P minus real 10yr yield,expected E/P minus real 10yr yield,expected E/P minus real 10yr yield,expected E/P minus real 10yr yield,expected E/P minus real 10yr yield,E/P minus nominal 10yr yield
+cross sectional regressions,-0.01,0.04,0.17,0.31,0.18,0.27,0.29,
+name3,"Adrian, Crump, and Moench","fama-french, momentum and inflation",fama-french and momentum,fama-french,fama-french,fama-french and momentum,fama-french and momentum,fama-french
+time series regressions,-0.01,0.01,0.07,0.18,0.29,0.34,0.24,
+name4,Best predictor in Goyal and Welch,Best predictor in Fama French 2002,Best predictor in Goyal and Welch,Best predictor in Goyal and Welch,Time-series predictor is D/P,Best predictor in Campbell and Thompson,Time-series predictor is D/P,Time-series predictor is D/P
+surveys,,,,,,,,
+zeros,Duke survey of CFOs,Duke survey of CFOs,Duke survey of CFOs,Duke survey of CFOs,Duke survey of CFOs,Duke survey of CFOs,Duke survey of CFOs,Duke survey of CFOs

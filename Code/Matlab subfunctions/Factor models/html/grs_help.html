@@ -1,0 +1,181 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>grs_test</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-01-27"><meta name="DC.source" content="grs_help.m"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head><body><div class="content"><h1>grs_test</h1><!--introduction--><p>Gibbons-Ross-Shanken test of zero pricing errors in a factor model</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Model</a></li><li><a href="#6">Description</a></li></ul></div><h2>Syntax<a name="1"></a></h2><pre>     grs = grs_test(returns,factors)
+     [grs alpha] = grs_test(returns,factors)
+     [grs alpha beta] = grs_test(returns,factors)
+     [grs alpha beta stats] = grs_test(returns,factors)
+     [...] = grs_test(returns,factors,method)
+     [...] = grs_test(returns,factors,'GMM',lags)</pre><h2>Model<a name="2"></a></h2><p>grs runs the linear time series regression</p><p><img src="grs_help_eq06201.png" alt="$R_t = \alpha + \beta F_t + \varepsilon_t$"></p><p>to test the hypothesis that all elements of the vector <img src="grs_help_eq87919.png" alt="$\alpha$"> are zero. <img src="grs_help_eq21815.png" alt="$R_t$"> is the <img src="grs_help_eq02707.png" alt="$N\times 1$"> vector of excess stock returns at time <img src="grs_help_eq07064.png" alt="$t$"> and <img src="grs_help_eq15496.png" alt="$F_t$"> is the <img src="grs_help_eq99422.png" alt="$K\times 1$"> vector of factor returns (assumed to be excess returns of zero-cost portfolios). grs reports the statistic</p><p><img src="grs_help_eq02887.png" alt="$$grs = \frac{T-N-K}{N} (1 + \hat{\mu}_F' \hat{\Sigma}_F^{-1}&#xA;\hat{\mu}_F)^{-1}  \hat{\alpha}' \hat{\Sigma}_\varepsilon^{-1}&#xA;\hat{\alpha}$$"></p><p>and uses its finite sample distribution <img src="grs_help_eq47476.png" alt="$F(N,T-N-K)$"> to produce p-values and other statistics. <img src="grs_help_eq57315.png" alt="$T$"> is the total number of observations and</p><p><img src="grs_help_eq40239.png" alt="$$\hat{\mu} = \frac{1}{T} \sum\limits_{t=1}^T R_t$"></p><p><img src="grs_help_eq83356.png" alt="$$\hat{\mu}_F = \frac{1}{T} \sum\limits_{t=1}^T F_t$"></p><p><img src="grs_help_eq02683.png" alt="$$\hat{\Sigma}_F = \frac{1}{T-K} \sum\limits_{t=1}^T (F_t-\hat{\mu}_F)(F_t-\hat{\mu}_F)'$"></p><p><img src="grs_help_eq72302.png" alt="$$\hat{\Sigma}_\varepsilon = \frac{1}{T} \sum\limits_{t=1}^T (R_t-\hat{\alpha}-\hat{\beta}F_t)(R_t-\hat{\alpha}-\hat{\beta}F_t)'$">.</p><h2>Description<a name="6"></a></h2><p><tt>grs = grs_test(returns,factors)</tt> gives the grs statistic (a number) for the null hypothesis that that all elements of the vector <img src="grs_help_eq87919.png" alt="$\alpha$"> are jointly zero. <tt>Factors</tt> is a <img src="grs_help_eq69097.png" alt="$T\times K$"> matrix of <img src="grs_help_eq57315.png" alt="$T$"> observations of <img src="grs_help_eq14888.png" alt="$K$"> pricing factors. <tt>returns</tt> is a <img src="grs_help_eq54042.png" alt="$T\times N$"> matrix of <img src="grs_help_eq57315.png" alt="$T$"> observations of the returns of <img src="grs_help_eq05153.png" alt="$N$"> assets. Note: the matrix of factors should not include a column of ones.</p><p><tt>[grs alpha] = grs_test(returns,factors)</tt> gives the <img src="grs_help_eq34694.png" alt="$1\times N$"> vector of intercepts (or pricing errors) <img src="grs_help_eq87919.png" alt="$\alpha$">.</p><p><tt>[grs alpha beta] = grs_test(returns,factors)</tt> gives the <img src="grs_help_eq66319.png" alt="$K\times N$"> matrix of regression coefficients <img src="grs_help_eq42727.png" alt="$\beta$">.</p><p><tt>[grs alpha beta stats] = grs_test(returns,factors)</tt> gives a structure with the following statistics</p><p><tt>stats.R2</tt> mean <img src="grs_help_eq27137.png" alt="$R^2$"> of all the the regressions</p><p><tt>stats.adjR2</tt> mean adjusted <img src="grs_help_eq27137.png" alt="$R^2$"> of all the regressions</p><p><tt>stats.absDev</tt> average absolute intercept <img src="grs_help_eq68317.png" alt="$\frac{1}{N} \sum\limits_{i=1}^N |\alpha_i|$"></p><p><tt>stats.stdErr</tt> <img src="grs_help_eq34694.png" alt="$1\times N$"> vector of standard errors of <img src="grs_help_eq87919.png" alt="$\alpha$"></p><p><tt>stats.tstat</tt> <img src="grs_help_eq34694.png" alt="$1\times N$"> vector of t-statisitics for <img src="grs_help_eq87919.png" alt="$\alpha$"></p><p><tt>stats.SR</tt> "Sharpe Ratio" of the intercepts <img src="grs_help_eq01691.png" alt="$(\hat{\alpha}' \hat{\Sigma}_\varepsilon^{-1} \hat{\alpha})^{\frac{1}{2}}$">. Lewellen, Nagel and Shanken (2010) recommend reporting it</p><p><tt>stats.p</tt> p-value of the grs test</p><p><tt>stats.sigmaF</tt> <img src="grs_help_eq30479.png" alt="$K\times K$"> matrix of covariances of <img src="grs_help_eq15496.png" alt="$F_t$"></p><p><tt>stats.sigmaEpsilon</tt> <img src="grs_help_eq17632.png" alt="$N\times N$"> matrix of covariances of <img src="grs_help_eq35211.png" alt="$\varepsilon_t$"></p><p><tt>stats.sharpeF</tt> Sharpe ratio (<img src="grs_help_eq40038.png" alt="$\hat{\mu}_F' \hat{\Sigma}_F^{-1} \hat{\mu}_F)^{\frac{1}{2}}$"> of the ex-post tangency portfolio constructed from the <img src="grs_help_eq14888.png" alt="$K$"> factors only</p><p><tt>stats.sharpeAll</tt> Sharpe ratio of the ex-post tangency portfolio constructed using the <img src="grs_help_eq14888.png" alt="$K$"> factors and the <img src="grs_help_eq05153.png" alt="$N$"> portfolios</p><p><tt>stats.criticalValue</tt> <img src="grs_help_eq80350.png" alt="$1$">, <img src="grs_help_eq78757.png" alt="$5$"> and <img src="grs_help_eq77806.png" alt="$10\%$"> critical values for the grs test</p><p><tt>[...] = grs_test(returns,factors,method)</tt> uses the string <i>method</i> to select alternative ways to estimate the model and test <img src="grs_help_eq65816.png" alt="$\alpha=0$"></p><p><tt>'GRS'</tt> This is the default. The computations are those described above.</p><p><tt>'Asymptotic GRS'</tt> Does not have a finite sample adjustment, ie. the factor <img src="grs_help_eq38961.png" alt="$\frac{T-N-K}{N}$"> in the grs statistic is replaced by <img src="grs_help_eq57315.png" alt="$T$"> and the limiting distribution is <img src="grs_help_eq66645.png" alt="$\chi^2_N$"> instead of  <img src="grs_help_eq47476.png" alt="$F(N,T-N-K)$">.</p><p><tt>'GMM'</tt> Uses a GMM procedure with Newey-West corrected standard errors:</p><p><img src="grs_help_eq58267.png" alt="$$grs = T\hat{\alpha}' var(\hat{\alpha})^{-1} \hat{\alpha} \sim \chi^2_N$$"></p><p>with <img src="grs_help_eq49655.png" alt="$var(\hat{\alpha})$"> computed by adjusting for heteroskedasticity and serial correlation using the estimator of Newey and West (1987). You can specify the number of lags to use by using the input argument <tt>lags</tt>. The default is <img src="grs_help_eq74306.png" alt="$floor(T^{\frac{1}{4}})$">.</p><p class="footer"><br>
+      Published with MATLAB&reg; 7.13<br></p></div><!--
+##### SOURCE BEGIN #####
+%% grs_test
+% Gibbons-Ross-Shanken test of zero pricing errors in a factor model
+
+%% Syntax
+%       grs = grs_test(returns,factors)
+%       [grs alpha] = grs_test(returns,factors)
+%       [grs alpha beta] = grs_test(returns,factors)
+%       [grs alpha beta stats] = grs_test(returns,factors)
+%       [...] = grs_test(returns,factors,method)
+%       [...] = grs_test(returns,factors,'GMM',lags)
+
+%% Model
+% grs runs the linear time series regression
+%%
+% $R_t = \alpha + \beta F_t + \varepsilon_t$
+%%
+% to test the hypothesis that all elements of the vector $\alpha$ are zero. $R_t$ is the $N\times 1$ vector of excess
+% stock returns at time $t$ and $F_t$ is the $K\times 1$ vector of factor returns
+% (assumed to be excess returns of zero-cost portfolios). grs reports the
+% statistic
+%
+% $$grs = \frac{T-N-K}{N} (1 + \hat{\mu}_F' \hat{\Sigma}_F^{-1}
+% \hat{\mu}_F)^{-1}  \hat{\alpha}' \hat{\Sigma}_\varepsilon^{-1}
+% \hat{\alpha}$$
+
+%%
+% and uses its finite sample distribution $F(N,T-N-K)$ to produce p-values
+% and other statistics. $T$ is the total number of observations and
+%
+% $$\hat{\mu} = \frac{1}{T} \sum\limits_{t=1}^T R_t$
+%
+% $$\hat{\mu}_F = \frac{1}{T} \sum\limits_{t=1}^T F_t$
+%
+% $$\hat{\Sigma}_F = \frac{1}{T-K} \sum\limits_{t=1}^T (F_t-\hat{\mu}_F)(F_t-\hat{\mu}_F)'$
+%
+% $$\hat{\Sigma}_\varepsilon = \frac{1}{T} \sum\limits_{t=1}^T
+% (R_t-\hat{\alpha}-\hat{\beta}F_t)(R_t-\hat{\alpha}-\hat{\beta}F_t)'$.
+
+%% Description
+% |grs = grs_test(returns,factors)| gives the grs statistic (a number) for
+% the null hypothesis that that all elements of the vector $\alpha$ are
+% jointly zero. |Factors| is a $T\times K$ matrix of $T$ observations of
+% $K$ pricing factors. |returns| is a $T\times N$ matrix of $T$ observations 
+% of the returns of $N$ assets. Note: the matrix of factors should not
+% include a column of ones.
+%
+% |[grs alpha] = grs_test(returns,factors)| gives the $1\times N$
+% vector of intercepts (or pricing errors) $\alpha$.
+%
+% |[grs alpha beta] = grs_test(returns,factors)| gives the $K\times N$
+% matrix of regression coefficients $\beta$.
+%
+% |[grs alpha beta stats] = grs_test(returns,factors)| gives a structure
+% with the following statistics
+%%
+% |stats.R2| mean $R^2$ of all the the regressions
+%
+% |stats.adjR2| mean adjusted $R^2$ of all the regressions
+%
+% |stats.absDev| average absolute intercept $\frac{1}{N}
+% \sum\limits_{i=1}^N |\alpha_i|$
+%
+% |stats.stdErr| $1\times N$ vector of standard errors of $\alpha$
+%
+% |stats.tstat| $1\times N$ vector of t-statisitics for $\alpha$
+%
+% |stats.SR| "Sharpe Ratio" of the intercepts $(\hat{\alpha}' \hat{\Sigma}_\varepsilon^{-1}
+% \hat{\alpha})^{\frac{1}{2}}$. Lewellen, Nagel and Shanken (2010) recommend
+% reporting it
+%
+% |stats.p| p-value of the grs test
+%
+% |stats.sigmaF| $K\times K$ matrix of covariances of $F_t$
+%
+% |stats.sigmaEpsilon| $N\times N$ matrix of covariances of $\varepsilon_t$
+%
+% |stats.sharpeF| Sharpe ratio ($\hat{\mu}_F' \hat{\Sigma}_F^{-1}
+% \hat{\mu}_F)^{\frac{1}{2}}$ of the ex-post tangency portfolio constructed
+% from the $K$ factors only
+%
+% |stats.sharpeAll| Sharpe ratio of the ex-post tangency portfolio
+% constructed using the $K$ factors and the $N$ portfolios
+%
+% |stats.criticalValue| $1$, $5$ and $10\%$ critical values for the grs test
+%
+% |[...] = grs_test(returns,factors,method)| uses the string _method_ to select alternative
+% ways to estimate the model and test $\alpha=0$
+% 
+% |'GRS'| This is the default. The computations are those described above.
+%
+% |'Asymptotic GRS'| Does not have a finite sample adjustment, ie. the factor
+% $\frac{T-N-K}{N}$ in the grs statistic is replaced by $T$ and the limiting
+% distribution is $\chi^2_N$ instead of  $F(N,T-N-K)$.
+%
+% |'GMM'| Uses a GMM procedure with Newey-West corrected standard
+% errors:
+%
+% $$grs = T\hat{\alpha}' var(\hat{\alpha})^{-1} \hat{\alpha} \sim \chi^2_N$$
+%
+% with $var(\hat{\alpha})$ computed by adjusting for heteroskedasticity and
+% serial correlation using the estimator of Newey and West (1987). You can 
+% specify the number of lags to use by using the input
+% argument |lags|. The default is $floor(T^{\frac{1}{4}})$.
+
+
+
+
+##### SOURCE END #####
+--></body></html>
