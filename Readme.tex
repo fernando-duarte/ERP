@@ -38,8 +38,8 @@
 	\subsection{Before Updating}
 	
 	\begin{enumerate}
-		\item Change the variable ``root\_dir'' in the \path{run_all.m} to the location of the directory. 
-		\item After creating a WRDS account, go to the WRDS web portal \href{https://wrds-cloud.wharton.upenn.edu/SASStudio/}{here}, and create a folder structure that matches the following image: 	
+		\item Change the variable ``root\_dir'' in the \path{run_all.m} to the location of the directory where your files (ERP Project) are stored. 
+		\item After creating a WRDS account, go to the WRDS web portal \href{https://wrds-cloud.wharton.upenn.edu/SASStudio/}{here}, you will be prompted to enter credentials for SAS, enter your user name and password for your WRDS account. Now create a folder structure that matches the following image: 	
 		\item \includegraphics{WRDSfilestructure.PNG}
 		\begin{enumerate}
 			\item Inside your folder in WRDS, you need to create a folder called ``WRDS'' and within that folder two folders, one called ``Code'' and one called ``Output.'' 
@@ -49,10 +49,10 @@
 		\item Update the files that require manual updating, specifically \path{input\cfo_data.csv} and \path{input\tb1m.csv}. 
 		\begin{enumerate}
 			\item tb1m.csv - is a HAVER download that is transferred from the SAN to the RAN. The code to download this data is located in \path{code\san_ scripts\haver_data.do}. Run this do file in Stata locally on the SAN. Then load up WINSCP on your computer, navigate to the folder where the data was downloaded on the SAN and copy that data to \path{\Input} in ERP.
-			\item cfo\_data.csv - requires manually updating the data using the CFO survey website, located \href{https://www.cfosurvey.org/release/}{here}. Go to the current year and quarter and select US high level results. Then find the part in the pdf where they report the expected S\&P500 growth over the next 1 and 10 years. The precise questions are: ``Over the next 10 years, I expect the average annual S\&P
-			500 return will be:'' and  ``Over the next year, I expect the average annual S\&P 500	return will be:.'' Add the mean prediction and the number of predictors to the cfo\_data.csv file for those two questions. 
+			\item cfo\_data.csv - requires manually updating the data using the CFO survey website, located \href{ https://cfosurvey.fuqua.duke.edu/release/}{here}. Go to the current year and quarter and select US high level results. Then find the part in the pdf where they report the expected average annual S\&P500 return over the next 1 and 10 years. The precise questions are: ``Over the next 10 years, I expect the average annual S\&P
+			500 return will be:Expected return'' and  ``Over the next year, I expect the average annual S\&P 500	return will be:Expected return.'' Add the mean surveyed return and the number of total surveyed to the \path{\Input\cfo_data.csv} file for those two questions. 
 		\end{enumerate}
-	\item In \path{Code\project_scripts\cay.m} the url in line 35 should be updated. To do so, go to the website \href{https://apps.bea.gov/histdata/histChildLevels.cfm?HMI=7}{here}. Select the most recent version and then right click on section two. Select ``copy link address'' and then paste that in place of the url in line 35. 
+	\item In \path{Code\project_scripts\cay.m} the url in line 35 should be updated. To do so, go to the Bureau of Economic Analysis website \href{https://apps.bea.gov/histdata/histChildLevels.cfm?HMI=7}{here}. Select the most recent version of data (e.g. 2020, Q1) and then under the main tab right click on section two. Select ``copy link address'' and then paste that in place of the url in line 35. 
 	\end{enumerate}
 	
 	\subsection{Running ERP}
