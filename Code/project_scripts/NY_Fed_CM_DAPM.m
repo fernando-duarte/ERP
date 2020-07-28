@@ -29,7 +29,7 @@ cd(root_dir)
 %%% Shiller
 filename = ['ie_data.xls'];
 shiller = readtable(filename,'Sheet',4, 'TreatAsEmpty', {'NA', '.', ''});
-shiller = shiller(7:end-1, 1:13);
+shiller = shiller(1:end-3, 1:13);
 shiller.Properties.VariableNames = {'date', 'P', 'D', 'E', 'CPI', 'date2', ...
     'RateGS10', 'RealPrice', 'RealDividend', 'RealTotalReturnPrice', ...
     'RealEarnings', 'RealEarningsScaled', 'CAPE'};
@@ -38,30 +38,17 @@ shiller.Properties.VariableNames = {'date', 'P', 'D', 'E', 'CPI', 'date2', ...
 shiller.date2 = [];
 shiller.RealTotalReturnPrice = [];
 shiller.RealEarningsScaled = [];
-ind = strcmp(shiller.date, {''});
-shiller = shiller(ind ==0,:);
 
 %creating dates
-dates = char(table2array(shiller(:,1)));
-year = dates(:,1:4);
-month = dates(:,6:7);
-ind = strcmp(month(:,2),{''});
-month = str2num(month);
-month(ind == 1,:) = 10;
-shiller_dates = datenum(strcat(year, '-', string(month), '-', '01'), 'yyyy-mm-dd');
+% dates = string(table2array(shiller(:,1)));
+% dateRange = split(dates, '.');
+year = floor(shiller.date);
+month = ceil((shiller.date-year)*100);
 
-for i = 2:size(shiller,2)
-    final = zeros(size(shiller,1),1);
-    temp = cellfun(@str2num,shiller{:,i}, 'UniformOutput', 0);
-    ind = strcmp(shiller{:,i}, {''});
-    ind2 = strcmp(shiller{:,i}, {'NA'});
-    ind3 = (ind == 0).*(ind2==0);
-    final(ind3 == 1,:) = cell2mat(temp);
-    final(ind == 1,:) = NaN;
-    final(ind2 == 1,:) = NaN;
-    data(:,i-1) = array2table(final);
-end
-data.date = dates;
+shiller_dates = datenum(year, month, ones(size(year, 1),1));
+shiller.dates = shiller_dates;
+data = shiller;
+data = data(:, [2:end]);
 data.Properties.VariableNames = {'P', 'D', 'E', 'CPI', ...
     'RateGS10', 'RealPrice', 'RealDividend', ...
     'RealEarnings', 'CAPE', 'date'};
@@ -69,10 +56,13 @@ data.Properties.VariableNames = {'P', 'D', 'E', 'CPI', ...
 
 clear year month
 
+% creating certificate for web acess 
+o = weboptions('CertificateFilename',"");
+
 %%% gs30
 url = 'https://fred.stlouisfed.org/graph/fredgraph.csv?bgcolor=%23e1e9f0&chart_type=line&drp=0&fo=open%20sans&graph_bgcolor=%23ffffff&height=450&mode=fred&recession_bars=on&txtcolor=%23444444&ts=12&tts=12&width=1168&nt=0&thu=0&trc=0&show_legend=yes&show_axis_titles=yes&show_tooltip=yes&id=GS30&scale=left&cosd=1977-02-01&coed=2019-09-01&line_color=%234572a7&link_values=false&line_style=solid&mark_type=none&mw=3&lw=2&ost=-99999&oet=99999&mma=0&fml=a&fq=Monthly&fam=avg&fgst=lin&fgsnd=2009-06-01&line_index=1&transformation=lin&vintage_date=2019-10-28&revision_date=2019-10-28&nd=1977-02-01';
 filename = [dir filesep 'gs30.csv'];
-outfile = websave(filename,url);
+outfile = websave(filename,url, o);
 
 gs30 = readtable(filename);
 gs30_dates = datenum(gs30.DATE);
@@ -80,7 +70,7 @@ gs30_dates = datenum(gs30.DATE);
 %%% gs20
 url = 'https://fred.stlouisfed.org/graph/fredgraph.csv?bgcolor=%23e1e9f0&chart_type=line&drp=0&fo=open%20sans&graph_bgcolor=%23ffffff&height=450&mode=fred&recession_bars=on&txtcolor=%23444444&ts=12&tts=12&width=1168&nt=0&thu=0&trc=0&show_legend=yes&show_axis_titles=yes&show_tooltip=yes&id=GS20&scale=left&c';
 filename = [dir filesep 'gs20.csv'];
-outfile = websave(filename,url);
+outfile = websave(filename,url, o);
 
 gs20 = readtable(filename);
 gs20_dates= datenum(gs20.DATE);
@@ -92,13 +82,13 @@ tb1m_value = table2array(tb1m(:,1));
 
 %%% FRED 
 fred_data = fred.latest({'GS1','GS3','GS5','GS7', 'GS10' ... 
-    'BAA', 'CPIAUCSL', 'CPILFESL', 'TB3MS', 'PAYEMS'});
+      'BAA', 'CPIAUCSL', 'CPILFESL', 'TB3MS', 'PAYEMS'});
 
 %% Merging Downloaded Data
 
 fred_dates = fred_data.date;
 dates = union(fred_dates, union(gs20_dates, ...
-    union(gs30_dates, union(tb1m_date,shiller_dates))));
+              union(gs30_dates, union(tb1m_date,shiller_dates))));
 
 ind = ismember(dates,fred_dates);
 fred_values(ind == 0,1:10) = NaN;
@@ -121,7 +111,7 @@ tb1m_data(ind == 1,:) = tb1m_value;
 
 ind = ismember(dates,shiller_dates);
 SDY5(ind == 0,:) = NaN;
-SDY5(ind == 1,:) = data.D./data.P;
+SDY5(ind == 1,:) = data.D ./ data.P;
 SPECAPE(ind == 0,:) = NaN;
 SPECAPE(ind == 1,:) = data.CAPE;
 SP500(ind == 0,:) = NaN;
@@ -156,17 +146,15 @@ size = array2table(size);
 
 clear ind
 
+% 
 Research_Factors = readtable('F-F_Research_Data_Factors.txt', 'ReadVariableNames', false);
-startrow = 3;
-endrow = 1119 + 12*(date_vec(1) - lastupdate(1)) + date_vec(2) - lastupdate(2);
-Research_Factors_final = Research_Factors(startrow:endrow,1:5);
+endrow = find(isnan(Research_Factors.Var1));
+endrow = endrow(1);
+Research_Factors_final = Research_Factors(1:endrow-1,1:5);
 Research_Factors_final.Properties.VariableNames =  {'date', 'MktRF','SMB','HML','RF'};
 Research_Factors_final.date = datenum(string(Research_Factors_final.date),'yyyymm');
-Research_Factors_final.MktRF = str2num(char(Research_Factors_final.MktRF));
-Research_Factors_final.SMB = str2num(char(Research_Factors_final.SMB));
-Research_Factors_final.HML = str2num(char(Research_Factors_final.HML));
-Research_Factors_final.RF = str2num(char(Research_Factors_final.RF));
 Research_Factors_final.MKT = Research_Factors_final.MktRF + Research_Factors_final.RF;
+% 
 
 % wrds cmt data
 

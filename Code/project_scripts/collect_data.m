@@ -19,20 +19,24 @@ lastday = datetime('today');
 filename = [input_dir filesep 'histimpl.xls'];
 histimpl = readtable(filename, 'Sheet', 7);
 
-header = find(string(table2array(histimpl(:,1))) == 'Year');
-histimpl = histimpl(header+1:end,:);
+% header = find(string(table2array(histimpl(:,1))) == 'Year');
+% histimpl = histimpl(header+1,:);
+% ending = find(string(table2array(histimpl(:,2))) == '');
+% ending = ending(1);
 
-ending = find(string(table2array(histimpl(:,2))) == '');
-ending = ending(1);
+% ddm_index = str2double(table2array(histimpl(:,14)));
 
-histimpl = histimpl(1:ending-1,:);
+% fcfe_index = str2double(table2array(histimpl(:,16)));
 
-ddm_index = str2double(table2array(histimpl(:,14)));
-fcfe_index = str2double(table2array(histimpl(:,16)));
-date = datenum(str2double(table2array(histimpl(:,1))), 12 ,1);
+histimpl = histimpl(1:end-1,:);
+
+dd_index = histimpl{:,14};
+fcfe_index = histimpl{:,16};
+
+date = datenum(histimpl{:,1}, 12 ,1);
 datanames = {'damodaran_ddm','damodaran_fcfe'};
 damodaran_ts = timetable(datetime(date,'ConvertFrom', 'datenum'), ...
-    ddm_index,fcfe_index, 'VariableNames', datanames);
+                         dd_index,fcfe_index, 'VariableNames', datanames);
 ind = damodaran_ts.Properties.RowTimes > lastday;
 damodaran_ts = damodaran_ts(ind == 0,:);
 %description
@@ -53,10 +57,9 @@ clear description freq data_init header ending c
 % nominal yield
 filename = [input_dir filesep 'feds200628.csv'];
 feds200628 = readtable(filename,'Headerlines', 9, 'TreatAsEmpty', {'NA'}); 
-feds200628.Date = datetime(feds200628.Date, 'ConvertFrom', 'datenum');
+% feds200628.Date = datetime(feds200628.Date, 'ConvertFrom', 'datenum');
 
 %creating values
-
 yields_ts = table2timetable(feds200628);
 
 % description of the data 
@@ -306,7 +309,7 @@ clear FRBNY_ERP_QS data dates headers
 
 filename = [input_dir filesep 'ie_data.xls'];
 shiller = readtable(filename,'Sheet',4, 'TreatAsEmpty', {'NA', '.', ''});
-shiller = shiller(7:end-1, 1:13);
+shiller = shiller(:, 1:13);
 shiller.Properties.VariableNames = {'date', 'P', 'D', 'E', 'CPI', 'date2', ...
     'RateGS10', 'RealPrice', 'RealDividend', 'RealTotalReturnPrice', ...
     'RealEarnings', 'RealEarningsScaled', 'CAPE'};
@@ -315,30 +318,25 @@ shiller.Properties.VariableNames = {'date', 'P', 'D', 'E', 'CPI', 'date2', ...
 shiller.date2 = [];
 shiller.RealTotalReturnPrice = [];
 shiller.RealEarningsScaled = [];
-ind = strcmp(shiller.date, {''});
-shiller = shiller(ind ==0,:);
+% ind = strcmp(shiller.date, {''});
+shiller = shiller(1:end-1,:);
 
 %creating dates
-dates = char(table2array(shiller(:,1)));
-year = dates(:,1:4);
-month = dates(:,6:7);
-ind = strcmp(month(:,2),{''});
-month = str2num(month);
-month(ind == 1,:) = 10;
-dates = datenum(strcat(year, '-', string(month), '-', '01'), 'yyyy-mm-dd');
+dates = shiller{:,1};
 
+year = ceil(dates);
+month = ceil((dates-floor(dates))*100);
+% ind = strcmp(month(:,2),{''});
+% month = str2num(month);
+% month(ind == 1,:) = 10;
+dates = datenum(strcat(string(year), '-', string(month), '-', '01'), 'yyyy-mm-dd');
+
+data = zeros(size(shiller, 1), size(shiller, 2)); 
 for i = 2:size(shiller,2)
-    final = zeros(size(shiller,1),1);
-    temp = cellfun(@str2num,shiller{:,i}, 'UniformOutput', 0);
-    ind = strcmp(shiller{:,i}, {''});
-    ind2 = strcmp(shiller{:,i}, {'NA'});
-    ind3 = (ind == 0).*(ind2==0);
-    final(ind3 == 1,:) = cell2mat(temp);
-    final(ind == 1,:) = NaN;
-    final(ind2 == 1,:) = NaN;
-    data(:,i-1) = array2table(final);
+    data(:,i-1) = shiller{:,i};
 end
-data.date = dates;
+data(:,size(shiller, 2)) = dates;
+data = array2table(data);
 data.Properties.VariableNames = {'P', 'D', 'E', 'CPI', ...
     'RateGS10', 'RealPrice', 'RealDividend', ...
     'RealEarnings', 'CAPE', 'date'};
@@ -480,8 +478,9 @@ fred_ts3 = table2timetable(short_term_yields);
 filename = [input_dir filesep 'tenyearyields.csv'];
 tenyearyields = readtable(filename);
 tenyearyields.Properties.VariableNames = {'date', 'RLONG'};
-tenyearyields.date = datetime(tenyearyields.date);
-tenyearyields.RLONG = str2double(tenyearyields.RLONG);
+
+% tenyearyields.date = datetime(tenyearyields.date);
+% tenyearyields.RLONG = str2double(tenyearyields.RLONG);
 fred_ts4 = table2timetable(tenyearyields); 
 fred_ts4 = retime(fred_ts4, 'monthly', 'lastvalue');
 

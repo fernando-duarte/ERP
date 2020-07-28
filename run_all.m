@@ -10,7 +10,7 @@ clc
 
 %% set up directories
 %main directory
-root_dir = [filesep 'home' filesep 'rcecrs02' filesep 'ERPv7']; % pick the folder where this file is located
+root_dir = [filesep 'home' filesep 'rcerxr21' filesep 'ERP']; % pick the folder where this file is located
 cd(root_dir) %%% do not change directory after running this line or code will fail when running wrds downloads in dwnload_data
 
 %%% adding paths

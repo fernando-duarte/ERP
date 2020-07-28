@@ -7,12 +7,12 @@
 %% Download WRDS Data
 
 %%% pathing in Sas Studio WRDS
-wrds_code_dir = '/home/frb-ny/smitch15/WRDS/Code';
-wrds_out_dir = '/home/frb-ny/smitch15/WRDS/Output';
+wrds_code_dir = '/home/frb-ny/fedraj/WRDS/Code';
+wrds_out_dir = '/home/frb-ny/fedraj/WRDS/Output';
 
 %%% Connect to the WRDS server
-wrds_username = 'smitch15';
-wrds_password = 'D@nkey10';
+wrds_username = 'fedraj';
+wrds_password = 'Feddata2020$%';
 a.SSH2conn = ssh2_config('wrds.wharton.upenn.edu',wrds_username,wrds_password,22);
 
 % Update the SAS code on the server
@@ -38,6 +38,7 @@ end
 ssh2_close(a.SSH2conn);
 
 %% Download assorted data from the internet
+mkdir([root_dir filesep 'Code' filesep 'python_scripts' filesep 'pyData']) 
 
 % downloading data from many different websites through python
 py_path = [root_dir filesep 'Code' filesep 'python_scripts'];
@@ -50,14 +51,17 @@ cd(path)
 movefile('*', [root_dir filesep 'Input']);
 cd(root_dir)
 
+% creating certificate for web acess 
+o = weboptions('CertificateFilename',"");
+
 % downloading other data
 url = 'https://us.spindices.com/documents/additional-material/sp-500-eps-est.xlsx';
 filename = [root_dir filesep 'Input' filesep 'sp-500-eps-est_download.xlsx'];
-outfile = websave(filename,url);
+outfile = websave(filename,url, o);
 
 url = 'http://www.federalreserve.gov/data/yield-curve-tables/feds200628.csv';
 filename = [root_dir filesep 'Input' filesep 'feds200628.csv'];
-outfile = websave(filename,url);
+outfile = websave(filename,url, o);
 
 url = 'http://people.stern.nyu.edu/jwurgler/data/Investor_Sentiment_Data_20190327_POST.xlsx';
 filename = [root_dir filesep 'Input' filesep 'Investor_Sentiment_data_20190327.xlsx'];
@@ -75,7 +79,7 @@ url = ['https://fred.stlouisfed.org/graph/fredgraph.csv?' ...
     '2009-06-01&line_index=1&transformation=lin&vintage_date=' ...
     dates '&revision_date=' dates '&nd=1962-01-02'];
 filename = [root_dir filesep 'Input' filesep 'tenyearyields.csv'];
-outfile = websave(filename,url);
+outfile = websave(filename,url, o);
 
 %% Replicate Fama French momentum portfolio 
 stata_path = [root_dir filesep 'Code' filesep 'stata_scripts'];

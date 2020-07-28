@@ -24,7 +24,7 @@ erp.date = datenum(erp.date);
 filename = [excel_output filesep 'ERP_vintages.csv'];
 erp_vintages = readtable(filename, 'DatetimeType','text');
 headers = erp_vintages.Properties.VariableNames;
-headers(1) = {'date'};
+% headers(1) = {'date'};
 erp_vintages.Properties.VariableNames = headers;
 erp_vintages.date = datenum(erp_vintages.date);
 
@@ -47,6 +47,7 @@ if issame == 0
     erp_vintages = outerjoin(erp, erp_vintages, 'Keys', 'date');
     erp_vintages.date_erp_vintages = []; %%% deleting added date column
     erp_vintages = erp_vintages(:, [1 3:end 2]); %%% moving new column to the end
+    headers(1,end+1) = cellstr(['erp_' datestr(today(), 'MMDDYYYY')]); 
 end
 
 %%% replacing NaN with blank

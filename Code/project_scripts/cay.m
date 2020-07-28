@@ -6,8 +6,8 @@ dir = [root_dir filesep 'Input'];
 
 %% Downloading Data
 
-%%% fred data for C and A
-fred = fred.latest({'A794RX0Q048SBEA', 'A229RX0Q048SBEA'});
+%% fred data for C and A
+fred_data = fred.latest({'A794RX0Q048SBEA', 'A229RX0Q048SBEA'});
 fred_label = {'PCE', 'RDI'};
 
 str = datestr(datenum(datetime('today')),'yyyy-mm-dd');
@@ -21,48 +21,62 @@ url = ['https://fred.stlouisfed.org/graph/fredgraph.csv?bgcolor=%23e1e9f0&' ...
     '%20of%20Period&fam=avg&fgst=lin&fgsnd=2009-06-01&line_index=1&trans' ...
     'formation=lin&vintage_date=' str '&revision_date=' str '&nd=1946-10-01'];
 filename = [dir filesep 'hhnw_data.csv'];
-outfile = websave(filename,url);
+
+% creating certificate for web acess 
+o = weboptions('CertificateFilename',"");
+
+outfile = websave(filename,url, o);
 
 hhnw = readtable(filename);
 hhnw_date = datenum(hhnw.DATE);
-hhnw_data = str2double(table2array(hhnw(:,2)));
+hhnw_data = table2array(hhnw(:,2));
 ind = hhnw_date > datenum(1951,12,31);
 hhnw_date = hhnw_date(ind ==1);
 hhnw_data = hhnw_data(ind ==1);
 
 %%% bea data to compute Y 
 filename =  [dir filesep 'rdic_data.xlsx'];
-url = 'https://apps.bea.gov/histdata/Releases/GDP_and_PI/2019/Q4/Advance_January-31-2020/Section2all_xls.xlsx';
-outfile = websave(filename,url, 'Timeout', 60);
+url = 'https://apps.bea.gov/histdata/Releases/GDP_and_PI/2020/Q1/Third_June-26-2020/Section2all_xls.xlsx';
+outfile = websave(filename,url, o, 'Timeout', 60);
 
-rdic = table2array(readtable(filename,'Sheet',3));
-rdic = rdic(7:end,24:end);
-rdic_date = char(string(rdic(1,:)'));
-rdic_year = str2num(rdic_date(:,1:4));
-rdic_quarters = str2num(rdic_date(:,6));
-rdic_date = datenum(rdic_year, 3*rdic_quarters-2,1);
-rdic_data = 1000*(sum([str2num(char(rdic(3,:))),str2num(char(rdic(17,:)))],2) - sum([str2num(char(rdic(26,:))), str2num(char(rdic(27,:))).*str2num(char(rdic(3,:)))./(str2num(char(rdic(3,:)))+str2num(char(rdic(10,:)))+str2num(char(rdic(13,:)))+str2num(char(rdic(14,:))))],2))./str2num(char(rdic(44,:)));
-rdic_data = rdic_data.*str2num(char(rdic(43,:)))./str2num(char(rdic(42,:)));
+% rdic = table2array(readtable(filename,'Sheet',3));
+rdic = readtable(filename,'Sheet',3);
+rdic = rdic(:,24:end);
+rdic_date = char(string(rdic.Properties.VariableNames'));
+
+rdic_year = rdic_date(4:end,2:5);
+rdic_year = str2num(char(rdic_year));       % convert matrix to a single vector
+rdic_quarters = str2num(rdic_date(4:end,7));
+
+rdic_date = datenum(rdic_year, (3*rdic_quarters-2), ...
+                    ones(length(rdic_year), 1));
+
+% rdic_data 1000 * (sum([rdic{3,:},rdic{17,:}],2) - sum([rdic{26,:}, rdic{27,:}.*rdic{3,:}./rdic{3,:}+rdic{10,:}+rdic{13,:}+rdic{14,:}],2)) ./ rdic{44,:};
+% mod num array via table{index:end, index:end} 
+val_1 = rdic{2,:} + rdic{16,:};
+val_2 = rdic{25,:} + (rdic{26,:} .* rdic{2,:} ./ rdic{2,:} + rdic{9,:} + rdic{12,:} + rdic{13,:});
+rdic_data = 1000 * (val_1 - val_2) ./ table2array(rdic(43,:));
+rdic_data = (rdic_data .* rdic{42,:} ./ rdic{41,:})';
 
 %% Matching Dates
 
-date = intersect(fred.date, intersect(hhnw_date, rdic_date));
+date = intersect(fred_data.date, intersect(hhnw_date, rdic_date));
 ind = date > datenum(1951,12,31); 
 date = date(ind == 1); 
 
-ind = ismember(fred.date, date);
-fred.value = fred.value(ind == 1,:);
+ind = ismember(fred_data.date, date);
+fred_data.value = fred_data.value(ind == 1,:);
 
 ind = ismember(hhnw_date, date);
 hhnw_data = hhnw_data(ind == 1,:);
 
 ind = ismember(rdic_date, date);
-rdic_data = rdic_data(ind == 1,:);
+rdic_data = rdic_data(ind == 1, :);
 
 %% Determening C, A, and Y
 
-c = fred.value(:,1);
-a = hhnw_data.*fred.value(:,2)/100;
+c = fred_data.value(:,1);
+a = hhnw_data.*fred_data.value(:,2)/100;
 y = rdic_data;
 
 %%% taking logs and converting to timetable
