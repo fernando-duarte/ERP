@@ -11,7 +11,8 @@ clear; clc;
 
 % main directory
 % pick the folder where this file is located
-root_dir = [filesep 'home' filesep 'rcerxr21' filesep 'ERP']; 
+root_dir = [filesep 'home' filesep 'rcerxr21' filesep 'FernandoWork' ...
+    filesep 'ERP_GIT']; 
 cd(root_dir) % do not change directory after running this line or 
              % code will fail when running wrds downloads in download_data
 
