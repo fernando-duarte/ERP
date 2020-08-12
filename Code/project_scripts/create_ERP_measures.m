@@ -10,11 +10,16 @@ model_ratio = .5;
 %% set directories
 
 % main directories
-input_dir = [root_dir filesep 'Temp' filesep 'Create ERP measures' filesep 'Input'];
-output_dir = [root_dir filesep 'Temp' filesep 'Create ERP measures' filesep 'Output'];
-next_dir = [root_dir filesep 'Temp' filesep 'Principal components' filesep 'Input'];
-next_dir2 = [root_dir filesep 'Temp' filesep 'Test for predictability' filesep 'Input'];
-Matlab_subfunctions = [root_dir filesep 'Code' filesep 'Matlab subfunctions'];
+input_dir = [root_dir filesep 'Temp' filesep 'Create ERP measures' ...
+    filesep 'Input'];
+output_dir = [root_dir filesep 'Temp' filesep 'Create ERP measures' ...
+    filesep 'Output'];
+next_dir = [root_dir filesep 'Temp' filesep 'Principal components' ...
+    filesep 'Input'];
+next_dir2 = [root_dir filesep 'Temp' filesep 'Test for predictability' ...
+    filesep 'Input'];
+Matlab_subfunctions = [root_dir filesep 'Code' filesep ...
+    'Matlab subfunctions'];
 factor_models = [Matlab_subfunctions filesep 'Factor models' filesep];
 lightspeed = [Matlab_subfunctions filesep 'lightspeed' filesep];
 excel_output = [root_dir filesep 'Output'];
@@ -39,9 +44,9 @@ load([input_dir filesep 'variables.mat'])
 
 %% construct ERP measures
 
-% loop through different horizons (monthly, quarterly, semi-annual, annual,
+% loop through different horizons (month, quarter, semi-annual, annual)
 % 2, 3, 4 and 5 years
-for return_horizon = [1/12 1/4 1/2 1 2 3 4 5]
+for return_horizon = [1/12, 1/4, 1/2, 1, 2, 3, 4, 5]
    
     % set up labels to name variables
     switch return_horizon
@@ -64,7 +69,7 @@ for return_horizon = [1/12 1/4 1/2 1 2 3 4 5]
     end
     
     % use geometric or arithmetic returns
-    for geometric_return = [0 1]
+    for geometric_return = [0, 1]
         
         % set up labels to name variables
         if geometric_return==1
@@ -89,10 +94,17 @@ for return_horizon = [1/12 1/4 1/2 1 2 3 4 5]
         
         % model: historical mean as far back as data allows
         summary = 'historical mean as far back as data allows';
-        realized_erp_ts = change_horizon(data_ts.realized_erp,data_ts.Time, 1/12,return_horizon,geometric_return,{'realized_erp'}); % change horizon by computing geometric or arithmetic multi-period returns
-        realized_erp = lag(realized_erp_ts); % shift time-series so that you only use past information when taking the mean
+        
+        % change horizon by computing geometric or arithmetic multi-period returns
+        realized_erp_ts = change_horizon(data_ts.realized_erp, ...
+            data_ts.Time, 1/12,return_horizon, ...
+            geometric_return,{'realized_erp'});      
+        
+        % shift time-series so you use past info. when taking the mean
+        realized_erp = lag(realized_erp_ts); 
         keep = ~isnan(realized_erp.realized_erp);
-        model = nancumsum(realized_erp.realized_erp,1,2)./nancumsum(keep,1,2); % historical mean of realized ERP
+        model = nancumsum(realized_erp.realized_erp, 1, 2) ./ ...
+            nancumsum(keep,1,2);                                            % historical mean of realized ERP
         erp_ts.(return_label).(horizon_label) = timetable(realized_erp_ts.Time, model);
         
         % record characteristics
@@ -107,7 +119,8 @@ for return_horizon = [1/12 1/4 1/2 1 2 3 4 5]
         realized_erp_clean = realized_erp(keep,:);
         window_size = 5*12;
         model = nan(size(realized_erp));
-        model(keep) = filter(ones(1,window_size)/window_size,1,realized_erp_clean.realized_erp); % average over last 60 months
+        model(keep) = filter(ones(1,window_size) / ...
+            window_size,1,realized_erp_clean.realized_erp);                 % average over last 60 months
         erp_ts.(return_label).(horizon_label) = synchronize(erp_ts.(return_label).(horizon_label), timetable(realized_erp_ts.Time, model));
        
         % record characteristics
@@ -342,7 +355,7 @@ for return_horizon = [1/12 1/4 1/2 1 2 3 4 5]
         model_no = model_no+1;
         
         %% Time-series regressions
-        time_series = {}; % keep track of what models belong to this category
+        time_series = {};                                                   % keep track of what models belong to this category
         
         % model: Predictor is D/P
         summary = 'Time-series predictor is D/P';
@@ -467,8 +480,10 @@ for return_horizon = [1/12 1/4 1/2 1 2 3 4 5]
         predictor2 = nancumsum(ff_erp2,1, 2)./nancumsum(~isnan(ff_erp2),1, 2);
         predictor3 = nancumsum(ff_erp3,1, 2)./nancumsum(~isnan(ff_erp3),1, 2);
         names = {'predictor1','predictor2','predictor3'};
-    
-        ff_ts = change_horizon([predictor1 predictor2 predictor3], data_ts.Time ,1/12,return_horizon,geometric_return, names); % change horizon by computing geometric or arithmetic multi-period returns
+        
+        % change horizon by computing geometric or arithmetic multi-period returns
+        ff_ts = change_horizon([predictor1 predictor2 predictor3], ...
+            data_ts.Time ,1/12,return_horizon,geometric_return, names); 
         
         predictors = {'predictor1','predictor2','predictor3'};
         
@@ -580,31 +595,44 @@ for return_horizon = [1/12 1/4 1/2 1 2 3 4 5]
 end
 
 %% save
-save([output_dir filesep 'erp_measures.mat'],'erp_ts','hist_mean','ddm','cross_section','time_series','surveys','monthly','quarterly','annual','model_description')
-save([next_dir filesep 'erp_measures.mat'],'erp_ts','hist_mean','ddm','cross_section','time_series','surveys','monthly','quarterly','annual','model_description')
-save([next_dir2 filesep 'erp_measures.mat'],'erp_ts','hist_mean','ddm','cross_section','time_series','surveys','monthly','quarterly','annual','model_description')
+save([output_dir filesep 'erp_measures.mat'],'erp_ts','hist_mean', ...
+    'ddm','cross_section','time_series','surveys','monthly', ...
+    'quarterly','annual','model_description')
+save([next_dir filesep 'erp_measures.mat'],'erp_ts','hist_mean','ddm', ...
+    'cross_section','time_series','surveys','monthly','quarterly', ...
+    'annual','model_description')
+save([next_dir2 filesep 'erp_measures.mat'],'erp_ts','hist_mean','ddm', ...
+    'cross_section','time_series','surveys','monthly','quarterly', ...
+    'annual','model_description')
 
 
 %% write to csv
 
 % set up headers
-headers1 = cellfun(@(x) ['model' num2str(x,'%02u')],mat2cell((1:number_of_models)',ones(number_of_models,1),1),'UniformOutput',0)';
+headers1 = cellfun(@(x) ['model' num2str(x,'%02u')], ...
+    mat2cell((1:number_of_models)', ones(number_of_models,1),1), ...
+    'UniformOutput',0)';
 headers2 = model_description;
 
 % save all estimates of 1-year ahead ERP, one column with a recession
 % dummy and one column with zeros
-recession_ts = 200*data_ts.recession-100; % +100 means recession, -100 means not recession (useful for excel graphs)
-save_ts = synchronize(erp_ts.(return_label).('one_year_ahead'),timetable(data_ts.Time,data_ts.SVENY01));
 
-save_ts = synchronize(save_ts,timetable(data_ts.Time,recession_ts)); % select right ERP measure and add a column for recession dummies
-save_ts = save_ts(save_ts.Time>=datetime(1959,12,1),:); % pick dates
+% +100 means recession, -100 means not recession (useful for excel graphs)
+recession_ts = 200*data_ts.recession-100; 
+save_ts = synchronize(erp_ts.(return_label).('one_year_ahead'), ...
+    timetable(data_ts.Time,data_ts.SVENY01));
+
+% select right ERP measure and add a column for recession dummies
+save_ts = synchronize(save_ts,timetable(data_ts.Time,recession_ts)); 
+save_ts = save_ts(save_ts.Time >= datetime(1959,12,1),:);                   % pick dates
 models = table2array(save_ts);
 models = [models zeros(size(models,1),1)];
 modelnum = sum(~isnan(models(:,1:end-2)),2);
 dates = datenum(save_ts.Time);
 
 % creating output table
-output_for_excel = table2cell(array2table(round([dates models modelnum],2)));
+output_for_excel = table2cell(array2table(round([dates, models, ...
+    modelnum],2)));
 
 % replacing nans with blanks
 for i = 1:size(output_for_excel,2)
@@ -622,7 +650,8 @@ output_for_excel = output_for_excel(modelnum > 5,:);
 output_for_excel = cell2table(output_for_excel);
 
 % creating first header row
-output_for_excel.Properties.VariableNames = ['date' headers1 'RF' 'recession' 'zeros' 'ModelNum'];
+output_for_excel.Properties.VariableNames = ['date', headers1, 'RF', ...
+    'recession', 'zeros', 'ModelNum'];
 
 % formating dates
 x = output_for_excel.date(2:end,:);

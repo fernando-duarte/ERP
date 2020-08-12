@@ -14,19 +14,10 @@ excel_dir = [root_dir filesep 'Output'];
 
 lastday = datetime('today');
 
-%% get damodaran data
+%% Get Damodaran data
 
 filename = [input_dir filesep 'histimpl.xls'];
 histimpl = readtable(filename, 'Sheet', 7);
-
-% header = find(string(table2array(histimpl(:,1))) == 'Year');
-% histimpl = histimpl(header+1,:);
-% ending = find(string(table2array(histimpl(:,2))) == '');
-% ending = ending(1);
-
-% ddm_index = str2double(table2array(histimpl(:,14)));
-
-% fcfe_index = str2double(table2array(histimpl(:,16)));
 
 histimpl = histimpl(1:end-1,:);
 
@@ -40,7 +31,8 @@ damodaran_ts = timetable(datetime(date,'ConvertFrom', 'datenum'), ...
 ind = damodaran_ts.Properties.RowTimes > lastday;
 damodaran_ts = damodaran_ts(ind == 0,:);
 %description
-damodaran_ts.Properties.VariableDescriptions = {'ERP from a dividend discount model', ... 
+damodaran_ts.Properties.VariableDescriptions = ...
+    {'ERP from a dividend discount model', ... 
     'ERP from a dividend discount model using free cash flow'};
 n = width(damodaran_ts);
 c(1:n) = {'annual'}; 
@@ -57,7 +49,6 @@ clear description freq data_init header ending c
 % nominal yield
 filename = [input_dir filesep 'feds200628.csv'];
 feds200628 = readtable(filename,'Headerlines', 9, 'TreatAsEmpty', {'NA'}); 
-% feds200628.Date = datetime(feds200628.Date, 'ConvertFrom', 'datenum');
 
 %creating values
 yields_ts = table2timetable(feds200628);
@@ -79,7 +70,10 @@ tips_ts = table2timetable(tips);
 ind = tips_ts.Properties.RowTimes > lastday;
 tips_ts = tips_ts(ind == 0,:);
 % description of the data
-tips_ts.Properties.VariableDescriptions = {'yield on a 10 year TIPS';'yield on a 20 year TIPS';'yield on a 30 year TIPS';'yield on a 5 year TIPS';'yield on a 7 year TIPS'};
+tips_ts.Properties.VariableDescriptions = ...
+    {'yield on a 10 year TIPS';'yield on a 20 year TIPS'; ...
+    'yield on a 30 year TIPS';'yield on a 5 year TIPS'; ... 
+    'yield on a 7 year TIPS'};
 n = length(tips_ts.Properties.VariableDescriptions);
 c(1:n) = {'monthly'}; 
 tips_ts.Properties.VariableUnits = c;
@@ -87,7 +81,8 @@ tips_ts.Properties.VariableUnits = c;
 % save
 save([next_dir filesep 'board.mat'],'yields_ts','tips_ts')
 
-clear tips datevalue year month day dates data date feds200628 header headers header_location i c
+clear tips datevalue year month day dates data date ...
+    feds200628 header headers header_location i c
 
 %% get cfo data
 
@@ -103,7 +98,8 @@ cfo_ts = data.data_out;
 ind = cfo_ts.Properties.RowTimes > lastday;
 cfo_ts = cfo_ts(ind == 0,:);
 % description of the data
-cfo_ts.Properties.VariableDescriptions = {'one-year ahead ERP from CFO survey'; ...
+cfo_ts.Properties.VariableDescriptions = ...
+    {'one-year ahead ERP from CFO survey'; ...
     'ten-year ahead ERP from CFO survey'};
 n = length(cfo_ts.Properties.VariableDescriptions); 
 c(1:n) = {'quarterly'};
@@ -127,10 +123,11 @@ while ~isempty(current_line)
 end
 
 % reads file
-headers = textscan(fgetl(fid),'%s','Delimiter',' ','MultipleDelimsAsOne',1);
+headers = textscan(fgetl(fid),'%s','Delimiter',' ', ...
+    'MultipleDelimsAsOne',1);
 headers = regexprep(headers{1},'[^a-zA-Z]','');
 ncols = length(headers{1});
-[data end_pointer] = textscan(fid,repmat('%f ',1,ncols),'Delimiter',...
+[data, ~] = textscan(fid,repmat('%f ',1,ncols),'Delimiter',...
     ' ','EmptyValue',NaN,'MultipleDelimsAsOne',1);
 fclose(fid);
 
@@ -144,7 +141,8 @@ ff_ts = table2timetable(ff_ts);
 ind = ff_ts.Properties.RowTimes > lastday;
 ff_ts = ff_ts(ind == 0,:);
 % description of the data
-ff_ts.Properties.VariableDescriptions = {'Realized excess returns for the market';'Size factor'; ...
+ff_ts.Properties.VariableDescriptions = ...
+    {'Realized excess returns for the market';'Size factor'; ...
     'Book-to-market factor';'risk free rate'};
 n = length(ff_ts.Properties.VariableDescriptions); 
 c(1:n) = {'monthly'};
@@ -167,9 +165,11 @@ while counter<2
 end
 
 % reads file
-headers = textscan(fgetl(fid),'%s','Delimiter',' ','MultipleDelimsAsOne',1);
+headers = textscan(fgetl(fid),'%s','Delimiter',' ', ...
+    'MultipleDelimsAsOne',1);
 ncols = length(headers{1});
-[data end_pointer] = textscan(fid,repmat('%f ',1,ncols+1),'Delimiter',' ','EmptyValue',NaN,'MultipleDelimsAsOne',1);
+[data, ~] = textscan(fid,repmat('%f ',1,ncols+1), ...
+    'Delimiter',' ','EmptyValue',NaN,'MultipleDelimsAsOne',1);
 fclose(fid);
 
 % create matlab dates
@@ -191,14 +191,15 @@ fid = fopen(filename); % open files
 
 % reads file until it finds headers
 current_line = fgetl(fid);
-while isempty(strfind(current_line,'Small'))
+while ~contains(current_line, 'Small')
     current_line = fgetl(fid);
 end
 
 % reads file
-headers = textscan(fgetl(fid),'%s','Delimiter',' ','MultipleDelimsAsOne',1);
+headers = textscan(fgetl(fid),'%s','Delimiter',' ', ...
+    'MultipleDelimsAsOne',1);
 ncols = length(headers{1});
-[data end_pointer] = textscan(fid,repmat('%f ',1,ncols+1),'Delimiter',...
+[data, ~] = textscan(fid,repmat('%f ',1,ncols+1),'Delimiter',...
     ' ','EmptyValue',NaN,'MultipleDelimsAsOne',1);
 fclose(fid);
 
@@ -209,16 +210,18 @@ ff_portfolios_ts = array2table([date, data]);
 headers = cell(26,1);
 headers{1} = 'date';
 headers(2:26,1) = cellfun(@(x) ['ff_p' num2str(x)],...
-    mat2cell((1:25)',ones(25,1),1),'UniformOutput',0);
+    num2cell((1:25)'),'UniformOutput',0);
 ff_portfolios_ts.Properties.VariableNames = headers;
-ff_portfolios_ts.date = datetime(ff_portfolios_ts.date, 'ConvertFrom', 'datenum');
+ff_portfolios_ts.date = datetime(ff_portfolios_ts.date, ...
+    'ConvertFrom', 'datenum');
 ff_portfolios_ts = table2timetable(ff_portfolios_ts); 
 
 
 % description of the data
 headers = cell(25,1);
-headers(:,1) = cellfun(@(x) ['Portfolio ' num2str(x) ' of size and bm sorted portfolios'],...
-    mat2cell((1:25)',ones(25,1),1),'UniformOutput',0);
+headers(:,1) = cellfun(@(x) ['Portfolio ', num2str(x), ...
+    ' of size and bm sorted portfolios'],...
+    num2cell((1:25)'),'UniformOutput',0);
 ff_portfolios_ts.Properties.VariableDescriptions = headers;
 n = length(ff_portfolios_ts.Properties.VariableDescriptions); 
 c(1:n) = {'monthly'};
@@ -236,14 +239,15 @@ fid = fopen(filename); % open files
 
 % reads file until it finds headers
 current_line = fgetl(fid);
-while isempty(strfind(current_line,'Average Value'))
+while ~contains(current_line, 'Average Value') 
     current_line = fgetl(fid);
 end
 
 % reads file
-headers = textscan(fgetl(fid),'%s','Delimiter',' ','MultipleDelimsAsOne',1);
+headers = textscan(fgetl(fid),'%s','Delimiter',' ', ...
+    'MultipleDelimsAsOne',1);
 ncols = length(headers{1});
-[data end_pointer] = textscan(fid,repmat('%f ',1,ncols+1),'Delimiter',...
+[data, ~] = textscan(fid,repmat('%f ',1,ncols+1),'Delimiter', ...
     ' ','EmptyValue',NaN,'MultipleDelimsAsOne',1);
 fclose(fid);
 
@@ -253,7 +257,8 @@ file_rep = dlmread(filename,'\t',1,0);
 ff_dates = data{1,1}; max_datadate = ff_dates(end);
 if file_rep(end,1) > max_datadate
     for i = 1 : 11
-       data{1,i} = [data{1,i}; file_rep(~ismember(file_rep(:,1), ff_dates),i)];
+       data{1,i} = [data{1,i}; file_rep(~ismember(file_rep(:,1), ...
+           ff_dates),i)];
     end
 end
 
@@ -264,16 +269,18 @@ mom_portfolios_ts = array2table([date data]);
 headers = cell(11,1);
 headers{1} = 'date';
 headers(2:11,1) = cellfun(@(x) ['mom_p' num2str(x)],...
-    mat2cell((1:10)',ones(10,1),1),'UniformOutput',0);
+    num2cell((1:10)'),'UniformOutput',0);
 mom_portfolios_ts.Properties.VariableNames = headers;
-mom_portfolios_ts.date = datetime(mom_portfolios_ts.date, 'ConvertFrom', 'datenum');
+mom_portfolios_ts.date = datetime(mom_portfolios_ts.date, ...
+    'ConvertFrom', 'datenum');
 mom_portfolios_ts = table2timetable(mom_portfolios_ts);
 ind = mom_portfolios_ts.Properties.RowTimes > lastday;
 mom_portfolios_ts = mom_portfolios_ts(ind == 0,:);
 % description of the data
 headers = cell(10,1);
-headers(1:10,1) = cellfun(@(x) ['Portfolio ' num2str(x) ' of momentum portfolios'],...
-    mat2cell((1:10)',ones(10,1),1),'UniformOutput',0);
+headers(1:10,1) = cellfun(@(x) ['Portfolio ', num2str(x), ...
+    ' of momentum portfolios'],...
+    num2cell((1:10)'),'UniformOutput',0);
 mom_portfolios_ts.Properties.VariableDescriptions = headers;
 n = width(mom_portfolios_ts);
 c(1:n) = {'monthly'};  
@@ -297,7 +304,8 @@ nyfed_ts = table2timetable(nyfed_ts);
 ind = nyfed_ts.Properties.RowTimes > lastday;
 nyfed_ts = nyfed_ts(ind == 0,:);
 % description of the data
-nyfed_ts.Properties.VariableDescriptions = {'ERP as constructed in Adrian, Crump and Moench (2013)'};
+nyfed_ts.Properties.VariableDescriptions = ...
+    {'ERP as constructed in Adrian, Crump and Moench (2013)'};
 nyfed_ts.Properties.VariableUnits = {'monthly'};
 
 % save
@@ -310,9 +318,9 @@ clear FRBNY_ERP_QS data dates headers
 filename = [input_dir filesep 'ie_data.xls'];
 shiller = readtable(filename,'Sheet',4, 'TreatAsEmpty', {'NA', '.', ''});
 shiller = shiller(:, 1:13);
-shiller.Properties.VariableNames = {'date', 'P', 'D', 'E', 'CPI', 'date2', ...
-    'RateGS10', 'RealPrice', 'RealDividend', 'RealTotalReturnPrice', ...
-    'RealEarnings', 'RealEarningsScaled', 'CAPE'};
+shiller.Properties.VariableNames = {'date', 'P', 'D', 'E', 'CPI', ...
+    'date2', 'RateGS10', 'RealPrice', 'RealDividend', ...
+    'RealTotalReturnPrice', 'RealEarnings', 'RealEarningsScaled', 'CAPE'};
 
 % deleting unecessary data
 shiller.date2 = [];
@@ -329,7 +337,8 @@ month = ceil((dates-floor(dates))*100);
 % ind = strcmp(month(:,2),{''});
 % month = str2num(month);
 % month(ind == 1,:) = 10;
-dates = datenum(strcat(string(year), '-', string(month), '-', '01'), 'yyyy-mm-dd');
+dates = datenum(strcat(string(year), '-', string(month), '-', '01'), ...
+    'yyyy-mm-dd');
 
 data = zeros(size(shiller, 1), size(shiller, 2)); 
 for i = 2:size(shiller,2)
@@ -340,8 +349,9 @@ data = array2table(data);
 data.Properties.VariableNames = {'P', 'D', 'E', 'CPI', ...
     'RateGS10', 'RealPrice', 'RealDividend', ...
     'RealEarnings', 'CAPE', 'date'};
-shiller_ts= array2table([data.date data.CAPE data.CPI, data.D, data.E, data.P, data.RateGS10, ...
-    data.RealDividend, data.RealEarnings, data.RealPrice]);
+shiller_ts= array2table([data.date data.CAPE data.CPI, data.D, ...
+    data.E, data.P, data.RateGS10, data.RealDividend, ...
+    data.RealEarnings, data.RealPrice]);
 
 shiller_ts.Properties.VariableNames = {'date', 'CAPE', 'CPI', 'D', 'E', ...
     'P', 'RateGS10', 'RealDividend', 'RealEarnings','RealPrice'};
@@ -369,12 +379,13 @@ clear real_earnings real_price sp500 cpi earnings c
 
 filename = [input_dir filesep 'EPS_estimates.csv'];
 fid = fopen(filename); % open files
-headers = textscan(fgetl(fid),'%s','Delimiter',','); % get headers
-headers = regexprep(headers{1},'[^a-zA-Z]',''); % make headers suitable for variable names
+headers = textscan(fgetl(fid),'%s','Delimiter',',');                        % get headers
+headers = regexprep(headers{1},'[^a-zA-Z]','');                             % make headers suitable for variable names
 
 % read data
 ncols = length(headers);
-[data end_pointer] = textscan(fid,repmat('%s ',1,ncols),'Delimiter',',','EmptyValue',NaN);
+[data, ~] = textscan(fid,repmat('%s ',1,ncols),'Delimiter',',', ...
+    'EmptyValue',NaN);
 fclose(fid);
 
 % convert strings to numbers
@@ -432,7 +443,7 @@ output5.date = datetime(output5.date, 'ConvertFrom', 'datenum');
 output5 = table2timetable(output5);
     
 % create time series for actual earnings per share
-[unique_fpdates,ind1,ind2]= unique(data{strcmpi(headers,'FPEDATS')});
+[unique_fpdates,ind1,~]= unique(data{strcmpi(headers,'FPEDATS')});
 actual_eps = array2table([datenum(unique_fpdates,'ddmmmyyyy') data{strcmpi(headers,'ACTUAL')}(ind1)]);
 actual_eps.Properties.VariableNames = {'date', 'EPS'};
 actual_eps.date = datetime(actual_eps.date, 'ConvertFrom', 'datenum');
@@ -443,7 +454,13 @@ thomson_ts = synchronize(actual_eps, output1,output2,output3,output4,output5);
 ind = thomson_ts.Properties.RowTimes > lastday;
 thomson_ts = thomson_ts(ind == 0,:);
 % description of the data
-thomson_ts.Properties.VariableDescriptions = {'Realized Earnings per Share for the S&P 500';'Mean analyst forecast for Earnings per share for the S&P500 for the current year';'Mean analyst forecast for Earnings per share for the S&P500 for next year';'Mean analyst forecast for Earnings per share for the S&P500 for 2 years ahead';'Mean analyst forecast for Earnings per share for the S&P500 for 3 years ahead';'Mean analyst forecast for Earnings per share for the S&P500 for 4 years ahead'};
+thomson_ts.Properties.VariableDescriptions = ...
+    {'Realized Earnings per Share for the S&P 500'; ...
+    'Mean analyst forecast for Earnings per share for the S&P500 for the current year'; ...
+    'Mean analyst forecast for Earnings per share for the S&P500 for next year'; ...
+    'Mean analyst forecast for Earnings per share for the S&P500 for 2 years ahead'; ...
+    'Mean analyst forecast for Earnings per share for the S&P500 for 3 years ahead'; ...
+    'Mean analyst forecast for Earnings per share for the S&P500 for 4 years ahead'};
 thomson_ts.Properties.VariableUnits = {'annual';'monthly';'monthly';'monthly';'monthly';'monthly'};
 
 % save
@@ -465,7 +482,8 @@ fred_ts1 = table2timetable(default_spreads);
 filename = [input_dir filesep 'recession.csv'];
 recession_dummy = readtable(filename);
 recession_dummy.date = datenum(recession_dummy.date);
-recession_dummy.date = datetime(recession_dummy.date, 'ConvertFrom', 'datenum');
+recession_dummy.date = datetime(recession_dummy.date, 'ConvertFrom', ...
+    'datenum');
 fred_ts2 = table2timetable(recession_dummy); 
 
 % get short-term nominal bond yields
@@ -508,19 +526,22 @@ clear recession_dummy recession_ts fred_ts1 fred_ts2 fred_ts3 fred_ts4
 filename = [input_dir filesep 'sp500_book_to_market.xlsx'];
 book2market = readtable(filename);
 book2market = book2market(:,[1 2 5]);
-book2market.Properties.VariableNames = {'date', 'book_per_share','sp500_price'};
+book2market.Properties.VariableNames = {'date', 'book_per_share', ...
+    'sp500_price'};
 book2market.date = datetime(book2market.date); 
 compustat_ts = table2timetable(book2market);
 ind = compustat_ts.Properties.RowTimes > lastday;
 compustat_ts = compustat_ts(ind == 0,:);
 % description of the data
-compustat_ts.Properties.VariableDescriptions = {'Book value per share';'S&P 500 closing price'};
+compustat_ts.Properties.VariableDescriptions = ...
+    {'Book value per share';'S&P 500 closing price'};
 compustat_ts.Properties.VariableUnits = {'annual';'monthly'};
 
 % save
 save([next_dir filesep 'compustat.mat'],'compustat_ts')
 
-clear monthnum month dates year day headers datevalue book2market monthstr current_line end_pointer
+clear monthnum month dates year day headers datevalue ...
+    book2market monthstr current_line end_pointer
 
 %% get sentiment and equity/debt issuance data
 
@@ -579,30 +600,33 @@ variable_names = who('-regexp','_ts')';
 output_for_excel = {};
 for i = 1:length(variable_names)
     variable = eval(variable_names{i});
-    column1 = variable.Properties.VariableNames'; %variablenames
-    column3 = variable.Properties.VariableUnits'; %frequency
-    column2 = variable.Properties.VariableDescriptions'; % description of time series
+    column1 = variable.Properties.VariableNames';                           % variablenames
+    column3 = variable.Properties.VariableUnits';                           % frequency
+    column2 = variable.Properties.VariableDescriptions';                    % description of time series
     mat = table2array(variable);
     column4 = {};column5 = {};
     for j = 1:width(variable)
         first_nonnan = find(~isnan(mat(:,j)),1,'first');
         last_nonnan = find(~isnan(mat(:,j)),1,'last');
-        column4 = [column4; max(datenum(1900,1,1),datenum(variable.Properties.RowTimes(first_nonnan)))];
-        column5 = [column5; datenum(variable.Properties.RowTimes(last_nonnan))];
+        column4 = [column4; max(datenum(1900,1,1), ... 
+            datenum(variable.Properties.RowTimes(first_nonnan)))];
+        column5 = [column5; ...
+            datenum(variable.Properties.RowTimes(last_nonnan))];
     end
-    output_for_excel = [output_for_excel;[column1 column2 column3 column4 column5]];
+    output_for_excel = [output_for_excel; ...
+        [column1 column2 column3 column4 column5]];
 end
 
 output_for_excel = cell2table(output_for_excel);
 
-output_for_excel.Properties.VariableNames = {'Names', 'Source', 'Frequency', ...
-    'FirstPeriod', 'LastPeriod'}; %headers of excel file
+output_for_excel.Properties.VariableNames = {'Names', 'Source', ...         % headers of excel file
+    'Frequency', 'FirstPeriod', 'LastPeriod'}; 
 output_for_excel.FirstPeriod = datestr(output_for_excel.FirstPeriod);
 output_for_excel.LastPeriod = datestr(output_for_excel.LastPeriod);
 
-file_name = [excel_dir filesep 'Original_data.csv']; %output file name
+file_name = [excel_dir filesep 'Original_data.csv'];                        % output file name
 
-writetable(output_for_excel, file_name); %writing to csv
+writetable(output_for_excel, file_name);                                    % writing to csv
 
 clearvars -except root_dir
 

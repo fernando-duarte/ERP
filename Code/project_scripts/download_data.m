@@ -4,21 +4,20 @@
 %%% uses WRDS/Compustat data, FRED data, data from Shiller, the FED, and
 %%% other websites. 
 
+load Init.mat wrds_code_dir wrds_out_dir wrds_username wrds_password        % initializing variables for WRDS read
+
 %% Download WRDS Data
 
-%%% pathing in Sas Studio WRDS
-wrds_code_dir = '/home/frb-ny/fedraj/WRDS/Code';
-wrds_out_dir = '/home/frb-ny/fedraj/WRDS/Output';
-
-%%% Connect to the WRDS server
-wrds_username = 'fedraj';
-wrds_password = 'Feddata2020$%';
-a.SSH2conn = ssh2_config('wrds.wharton.upenn.edu',wrds_username,wrds_password,22);
+a.SSH2conn = ssh2_config('wrds.wharton.upenn.edu', ...
+    wrds_username, wrds_password, 22);
 
 % Update the SAS code on the server
-scp_put(a.SSH2conn,'wrdspull.sas', wrds_code_dir,'Code/wrds_scripts/','wrdspull.sas');
-scp_put(a.SSH2conn,'get_crspm.sas',wrds_code_dir,'Code/wrds_scripts/','get_crspm.sas');
-scp_put(a.SSH2conn,'get_cmt.sas',wrds_code_dir,'Code/wrds_scripts/','get_cmt.sas');
+scp_put(a.SSH2conn,'wrdspull.sas', wrds_code_dir, ...
+    'Code/wrds_scripts/','wrdspull.sas');
+scp_put(a.SSH2conn,'get_crspm.sas',wrds_code_dir, ...
+    'Code/wrds_scripts/','get_crspm.sas');
+scp_put(a.SSH2conn,'get_cmt.sas',wrds_code_dir, ...
+    'Code/wrds_scripts/','get_cmt.sas');
 
 % Remotely run the SAS code and download the data files to local folders
 ssh2_command(a.SSH2conn, ['qsas ' wrds_code_dir '/wrdspull.sas'])
@@ -29,9 +28,12 @@ ssh2_command(a.SSH2conn, ['qsas ' wrds_code_dir '/get_cmt.sas'])
 scp_get(a.SSH2conn,'sp500_book_to_market.xlsx', 'Input/', wrds_out_dir);
 scp_get(a.SSH2conn,'EPS_estimates.csv', 'Input/', wrds_out_dir);
 scp_get(a.SSH2conn,'cmt_data.csv', 'Input/',wrds_out_dir);
+
+% download works but causes an error sometimes (checks the validity)
 try
-    scp_get(a.SSH2conn,'crsp_m.txt', 'Input/',wrds_out_dir); %download works but causes an error sometimes
+    scp_get(a.SSH2conn,'crsp_m.txt', 'Input/',wrds_out_dir); 
 catch
+    warning('The WRDS download has broken, download the data manually');
 end
 
 % close connection
@@ -56,16 +58,19 @@ o = weboptions('CertificateFilename',"");
 
 % downloading other data
 url = 'https://us.spindices.com/documents/additional-material/sp-500-eps-est.xlsx';
-filename = [root_dir filesep 'Input' filesep 'sp-500-eps-est_download.xlsx'];
-outfile = websave(filename,url, o);
+filename = [root_dir filesep 'Input' filesep ...
+    'sp-500-eps-est_download.xlsx'];
+% outfile = websave(filename, url, o);
+websave(filename, url, o);
 
 url = 'http://www.federalreserve.gov/data/yield-curve-tables/feds200628.csv';
 filename = [root_dir filesep 'Input' filesep 'feds200628.csv'];
-outfile = websave(filename,url, o);
+websave(filename, url, o);
 
 url = 'http://people.stern.nyu.edu/jwurgler/data/Investor_Sentiment_Data_20190327_POST.xlsx';
-filename = [root_dir filesep 'Input' filesep 'Investor_Sentiment_data_20190327.xlsx'];
-outfile = websave(filename,url, 'Timeout', 60);
+filename = [root_dir filesep 'Input' filesep ...
+    'Investor_Sentiment_data_20190327.xlsx'];
+websave(filename, url, 'Timeout', 60);
 
 dates = datestr(datenum(datetime('today')),'yyyy-mm-dd');
 url = ['https://fred.stlouisfed.org/graph/fredgraph.csv?' ... 
@@ -79,7 +84,7 @@ url = ['https://fred.stlouisfed.org/graph/fredgraph.csv?' ...
     '2009-06-01&line_index=1&transformation=lin&vintage_date=' ...
     dates '&revision_date=' dates '&nd=1962-01-02'];
 filename = [root_dir filesep 'Input' filesep 'tenyearyields.csv'];
-outfile = websave(filename,url, o);
+websave(filename,url, o);
 
 %% Replicate Fama French momentum portfolio 
 stata_path = [root_dir filesep 'Code' filesep 'stata_scripts'];

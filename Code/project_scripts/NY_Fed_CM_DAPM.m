@@ -16,39 +16,37 @@ cd(dir)
 %%% Fama French
 url = 'http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_TXT.zip';
 filename = [dir filesep 'F-F--Research_Data_Factors.zip'];
-outfile = websave(filename, url);
+websave(filename, url);
 unzip(filename);
 
 url = 'http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Portfolios_Formed_on_ME_CSV.zip';
 filename = [dir filesep 'Portfolios_Formed_on_ME.zip'];
-outfile = websave(filename, url);
+websave(filename, url);
 unzip(filename);
 
 cd(root_dir)
 
 %%% Shiller
-filename = ['ie_data.xls'];
+filename = 'ie_data.xls';
 shiller = readtable(filename,'Sheet',4, 'TreatAsEmpty', {'NA', '.', ''});
-shiller = shiller(1:end-3, 1:13);
-shiller.Properties.VariableNames = {'date', 'P', 'D', 'E', 'CPI', 'date2', ...
-    'RateGS10', 'RealPrice', 'RealDividend', 'RealTotalReturnPrice', ...
-    'RealEarnings', 'RealEarningsScaled', 'CAPE'};
+shiller = shiller(1:end-3, 1:13);                                           % remove the last blank rows and restrict columns
+shiller.Properties.VariableNames = {'date', 'P', 'D', 'E', 'CPI', ...
+    'date2', 'RateGS10', 'RealPrice', 'RealDividend', ...
+    'RealTotalReturnPrice', 'RealEarnings', 'RealEarningsScaled', 'CAPE'};
 
-% deleting unecessary data
+% deleting unecessary data (repeating figures)
 shiller.date2 = [];
 shiller.RealTotalReturnPrice = [];
 shiller.RealEarningsScaled = [];
 
-%creating dates
-% dates = string(table2array(shiller(:,1)));
-% dateRange = split(dates, '.');
-year = floor(shiller.date);
-month = ceil((shiller.date-year)*100);
+% creating year and month metrics as dates are formated as 1.8710e+03
+year = floor(shiller.date);                                                 % e.g. floor(1.8710e+03) = 1871
+month = ceil((shiller.date-year)*100);                                      % e.g. ceil((1.87103e+03-1871)*100) = 3
 
-shiller_dates = datenum(year, month, ones(size(year, 1),1));
+shiller_dates = datenum(year, month, ones(size(year, 1),1));                % formating to datetime measure
 shiller.dates = shiller_dates;
 data = shiller;
-data = data(:, [2:end]);
+data = data(:, 2:end);                                                      % remove the date column
 data.Properties.VariableNames = {'P', 'D', 'E', 'CPI', ...
     'RateGS10', 'RealPrice', 'RealDividend', ...
     'RealEarnings', 'CAPE', 'date'};
@@ -62,7 +60,7 @@ o = weboptions('CertificateFilename',"");
 %%% gs30
 url = 'https://fred.stlouisfed.org/graph/fredgraph.csv?bgcolor=%23e1e9f0&chart_type=line&drp=0&fo=open%20sans&graph_bgcolor=%23ffffff&height=450&mode=fred&recession_bars=on&txtcolor=%23444444&ts=12&tts=12&width=1168&nt=0&thu=0&trc=0&show_legend=yes&show_axis_titles=yes&show_tooltip=yes&id=GS30&scale=left&cosd=1977-02-01&coed=2019-09-01&line_color=%234572a7&link_values=false&line_style=solid&mark_type=none&mw=3&lw=2&ost=-99999&oet=99999&mma=0&fml=a&fq=Monthly&fam=avg&fgst=lin&fgsnd=2009-06-01&line_index=1&transformation=lin&vintage_date=2019-10-28&revision_date=2019-10-28&nd=1977-02-01';
 filename = [dir filesep 'gs30.csv'];
-outfile = websave(filename,url, o);
+websave(filename,url, o);
 
 gs30 = readtable(filename);
 gs30_dates = datenum(gs30.DATE);
@@ -78,7 +76,7 @@ gs20_dates= datenum(gs20.DATE);
 %%% tb1m
 tb1m = readtable('tb1m.csv');
 tb1m_date = datenum(tb1m.date);
-tb1m_value = table2array(tb1m(:,1));
+tb1m_value = tb1m{:,1};
 
 %%% FRED 
 fred_data = fred.latest({'GS1','GS3','GS5','GS7', 'GS10' ... 
@@ -109,6 +107,7 @@ ind = ismember(dates,tb1m_date);
 tb1m_data(ind == 0,:) = NaN;
 tb1m_data(ind == 1,:) = tb1m_value;
 
+% check for member coordination (shiller in dates)
 ind = ismember(dates,shiller_dates);
 SDY5(ind == 0,:) = NaN;
 SDY5(ind == 1,:) = data.D ./ data.P;
@@ -137,8 +136,10 @@ startrow = 13;
 lastupdate = datevec(datenum(2019,9,19)); 
 today_date = datenum(datetime('today'));
 date_vec = datevec(today_date);
-endrow = 1129 + 12*(date_vec(1) - lastupdate(1)) + date_vec(2) - lastupdate(2);
-size = dlmread('Portfolios_Formed_on_ME.CSV', ',',[startrow, 0, endrow,19]);
+endrow = 1129 + 12*(date_vec(1) - lastupdate(1)) + ...
+    date_vec(2) - lastupdate(2);
+size = dlmread('Portfolios_Formed_on_ME.CSV', ',', ...
+    [startrow, 0, endrow,19]);
 ind = isnan(size(:,1));
 size(ind == 1,:) = [];
 size(:,1) = datenum(num2str(size(:,1)),'yyyymm');
@@ -147,13 +148,17 @@ size = array2table(size);
 clear ind
 
 % 
-Research_Factors = readtable('F-F_Research_Data_Factors.txt', 'ReadVariableNames', false);
+Research_Factors = readtable('F-F_Research_Data_Factors.txt', ...
+    'ReadVariableNames', false);
 endrow = find(isnan(Research_Factors.Var1));
 endrow = endrow(1);
 Research_Factors_final = Research_Factors(1:endrow-1,1:5);
-Research_Factors_final.Properties.VariableNames =  {'date', 'MktRF','SMB','HML','RF'};
-Research_Factors_final.date = datenum(string(Research_Factors_final.date),'yyyymm');
-Research_Factors_final.MKT = Research_Factors_final.MktRF + Research_Factors_final.RF;
+Research_Factors_final.Properties.VariableNames =  {'date', 'MktRF', ...
+    'SMB','HML','RF'};
+Research_Factors_final.date = datenum(string( ...
+    Research_Factors_final.date),'yyyymm');
+Research_Factors_final.MKT = Research_Factors_final.MktRF + ...
+    Research_Factors_final.RF;
 % 
 
 % wrds cmt data
@@ -174,8 +179,8 @@ final_size.Properties.VariableNames{'size1'} = 'date';
 final_FF = Research_Factors_final;
 final_haver = data;
 
-clear ans dates fbaa FCM*  ftbs3e lanagra merge mpcuslfe pcun cmt* lastupdate
-clear Research*  sdy5 size SP500E SPECAE tb1m wrds a SPECAPE endrow url data 
+clear ans dates fbaa FCM* ftbs3e lanagra merge mpcuslfe pcun cmt* lastupdate
+clear Research* sdy5 size SP500E SPECAE tb1m wrds a SPECAPE endrow url data 
 clear final_data tb1m* startrow 
 
 %% Merging the Different Datasets to match dates
@@ -209,16 +214,17 @@ clear Research_Factors*
 size10 = struct();
 size10.data = final_size(:,2:end);
 size10.date = final_size(:,1);
-size10.names = {'size1','size2','size3','size4','size5','size6','size7', ...
-    'size8','size','size10'};
+size10.names = {'size1','size2','size3','size4','size5','size6', ...
+    'size7', 'size8','size','size10'};
 
 clear size
 
 haver = struct();
 haver.data = final_haver(:,2:end);
 haver.date = final_haver(:,1);
-haver.names = {'FTBTR1M', 'FCM1E','FCM3E','FCM5E','FCM7E','FCM10E','FCM20E', ...
-    'FCM30E','FBAAE','SDY5','PCUN', 'MPCUSLFE','FTBS3E','LANAGR','SP500E','SPECAPE',};
+haver.names = {'FTBTR1M', 'FCM1E','FCM3E','FCM5E','FCM7E','FCM10E', ...
+    'FCM20E', 'FCM30E','FBAAE','SDY5','PCUN', 'MPCUSLFE','FTBS3E', ...
+    'LANAGR','SP500E','SPECAPE',};
 
 cmts = struct();
 cmts.data = final_cmt(:,2:end);
@@ -306,9 +312,9 @@ X3full(:,1) = X3full(:,1)/100;
 
 %%% in sample analysis
 
-if ~isempty(X1full), X1 = X1full(T1_is:T2,:); else X1 = []; end     
-if ~isempty(X2full), X2 = X2full(T1_is:T2,:); else X2 = []; end 
-if ~isempty(X3full), X3 = X3full(T1_is:T2,:); else X3 = []; end
+if ~isempty(X1full), X1 = X1full(T1_is:T2,:); else, X1 = []; end     
+if ~isempty(X2full), X2 = X2full(T1_is:T2,:); else, X2 = []; end 
+if ~isempty(X3full), X3 = X3full(T1_is:T2,:); else, X3 = []; end
 
 %%% deleting NaNs
 ind = sum(isnan([X1 X2 X3]),2);

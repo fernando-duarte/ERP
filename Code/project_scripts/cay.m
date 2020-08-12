@@ -1,12 +1,12 @@
 %%% This file computes CAY measure as produced by Lettau and Ludvigson in
 %%% 2001. 
 
+load Init.mat beaURL                                                        % BEA NIPA website link
+
 %% Setting Directory
 dir = [root_dir filesep 'Input'];
 
-%% Downloading Data
-
-%% fred data for C and A
+%% Downloading FRED data for C and A
 fred_data = fred.latest({'A794RX0Q048SBEA', 'A229RX0Q048SBEA'});
 fred_label = {'PCE', 'RDI'};
 
@@ -25,7 +25,7 @@ filename = [dir filesep 'hhnw_data.csv'];
 % creating certificate for web acess 
 o = weboptions('CertificateFilename',"");
 
-outfile = websave(filename,url, o);
+websave(filename,url, o);
 
 hhnw = readtable(filename);
 hhnw_date = datenum(hhnw.DATE);
@@ -36,27 +36,36 @@ hhnw_data = hhnw_data(ind ==1);
 
 %%% bea data to compute Y 
 filename =  [dir filesep 'rdic_data.xlsx'];
-url = 'https://apps.bea.gov/histdata/Releases/GDP_and_PI/2020/Q1/Third_June-26-2020/Section2all_xls.xlsx';
+url = beaURL; 
 outfile = websave(filename,url, o, 'Timeout', 60);
 
-% rdic = table2array(readtable(filename,'Sheet',3));
-rdic = readtable(filename,'Sheet',3);
+rdic = readtable(filename,'Sheet',3);                                       % Personal income and its Desposition
 rdic = rdic(:,24:end);
-rdic_date = char(string(rdic.Properties.VariableNames'));
+rdic_date = char(rdic.Properties.VariableNames');                           % transpose variable names and cast to char
 
-rdic_year = rdic_date(4:end,2:5);
-rdic_year = str2num(char(rdic_year));       % convert matrix to a single vector
+% character variables can be index referenced 
+rdic_year = str2num(rdic_date(4:end,2:5));
 rdic_quarters = str2num(rdic_date(4:end,7));
 
 rdic_date = datenum(rdic_year, (3*rdic_quarters-2), ...
                     ones(length(rdic_year), 1));
 
-% rdic_data 1000 * (sum([rdic{3,:},rdic{17,:}],2) - sum([rdic{26,:}, rdic{27,:}.*rdic{3,:}./rdic{3,:}+rdic{10,:}+rdic{13,:}+rdic{14,:}],2)) ./ rdic{44,:};
-% mod num array via table{index:end, index:end} 
-val_1 = rdic{2,:} + rdic{16,:};
-val_2 = rdic{25,:} + (rdic{26,:} .* rdic{2,:} ./ rdic{2,:} + rdic{9,:} + rdic{12,:} + rdic{13,:});
-rdic_data = 1000 * (val_1 - val_2) ./ table2array(rdic(43,:));
-rdic_data = (rdic_data .* rdic{42,:} ./ rdic{41,:})';
+var1 = rdic{2,:};       % Compensation of employees
+var2 = rdic{16,:};      % Personal current transfer receipts
+var3 = rdic{25,:};      % Less: Con. for gov. social insurance, domestic
+var4 = rdic{26,:};      % Less: Personal current taxes
+var5 = rdic{9,:};       % Proprietors' income with inventory valuation 
+var6 = rdic{12,:};      % Rental income of persons with capital cons.
+var7 = rdic{13,:};      % Personal income receipts on assets
+var8 = rdic{43,:};      % Population (midperiod, thousands)
+var9 = rdic{41,:};      % Current Dollars
+var10 = rdic{42,:};     % Chained (2012) Dollars
+
+% Formulaic computation for rdic_data 
+sum1 = var1 + var2;
+sum2 = var3 + (var4 .* var1 ./ var1 + var5 + var6 + var7);
+rdic_data = 1000 * (sum1 - sum2) ./ var8;
+rdic_data = (rdic_data .* var10 ./ var9)';
 
 %% Matching Dates
 
@@ -98,10 +107,12 @@ fixedA = zeros(size(Xbeta,1),k*2);
 for i = 1:k*2
     fixedA(:,i) = table2array(lag(A,i-k),2) - table2array(lag(A,i-1-k),2);
 end
+
 fixedY = zeros(size(Xbeta,1),k*2);
 for i = 1:k*2
     fixedY(:,i) = table2array(lag(Y,i-k),2) - table2array(lag(Y,i-1-k),2);
 end
+
 Xfixed = [fixedA fixedY];
 
 X = [ones(size(Xbeta,1),1) Xbeta Xfixed];

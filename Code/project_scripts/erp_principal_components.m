@@ -13,12 +13,16 @@ end_date = datenum(datetime('today')); % pick final date to use
 
 % main directories
 pc_dir = [root_dir filesep 'Temp' filesep 'Principal components'];
-input_dir = [root_dir filesep 'Temp' filesep 'Principal components' filesep 'Input'];
-input_dir2 = [root_dir filesep 'Temp' filesep 'Create ERP measures' filesep 'Input'];
-output_dir = [root_dir filesep 'Temp' filesep 'Principal components' filesep 'Output'];
+input_dir = [root_dir filesep 'Temp' filesep 'Principal components' ...
+    filesep 'Input'];
+input_dir2 = [root_dir filesep 'Temp' filesep 'Create ERP measures' ...
+    filesep 'Input'];
+output_dir = [root_dir filesep 'Temp' filesep 'Principal components' ...
+    filesep 'Output'];
 next_dir = [root_dir filesep 'Temp' filesep 'Create term structure of ERP' ...
     filesep 'Input'];
-next_dir2 = [root_dir filesep 'Temp' filesep 'Test for predictability' filesep 'Input'];
+next_dir2 = [root_dir filesep 'Temp' filesep 'Test for predictability' ...
+    filesep 'Input'];
 excel_output = [root_dir filesep 'Output'];
 
 % make directories if they don't exist
@@ -39,7 +43,7 @@ load([input_dir2 filesep 'variables.mat'])
 
 %% find principal components
 
-for return_horizon = [1/12 1/4 1/2 1 2 3 4 5]
+for return_horizon = [1/12, 1/4, 1/2, 1, 2, 3, 4, 5]
     
     % set up labels to name variables
     switch return_horizon
@@ -202,11 +206,14 @@ for return_horizon = [1/12 1/4 1/2 1 2 3 4 5]
             horizon_label_excel2 = 'Five years ahead';
     end
     
-        % name of the excel file
-    filename = [excel_output filesep 'ERP_principal_Components_' horizon_label_excel '.csv'];
+    % name of the excel file
+    filename = [excel_output filesep 'ERP_principal_Components_' ...
+        horizon_label_excel '.csv'];
 
     % set up headers
-    headers = {horizon_label_excel2,'historical mean','ddm','cross sectional regressions','time series regressions','surveys','risk free rate', 'recession', 'zeros'};
+    headers = {horizon_label_excel2, 'historical mean', 'ddm', ...
+        'cross sectional regressions', 'time series regressions', ...
+        'surveys', 'risk free rate', 'recession', 'zeros'};
     
     % save estimates of ERP found using principal components
     % plus a column with a recession dummy and a column of zeros
