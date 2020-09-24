@@ -66,5 +66,16 @@ erp_vintages.date = datestr(erp_vintages.date);
 csv_name = [excel_output filesep 'ERP_vintages.csv'];
 writetable(erp_vintages, csv_name);
 
-clearvars -except root_dir
 disp('Finished vintages.m')
+
+%% Produce clean ERP estimates for Fernando's Website
+
+clean_csv_name = [excel_output filesep 'ERP.csv'];
+clean_csv = erp_vintages(:, [1, end-1]);
+clean_csv.Properties.VariableNames = {'date', 'Equity Risk Premium (1yr)'};
+
+writetable(clean_csv, clean_csv_name);
+
+%%
+
+clearvars -except root_dir
