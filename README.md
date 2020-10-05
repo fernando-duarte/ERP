@@ -41,14 +41,7 @@ The code base is mapped as a linear series of Matlab file, outlined below:
 	- Load time series from all data providers (e.g. CFO, Fama-French) compiling them into one timetable of a common time vector along some axis. 
 	- Generate Campbell-Thompson variables, a more detailied breakdown of the variable’s calculation can be found [here](https://dash.harvard.edu/bitstream/handle/1/2622619/Campbell_Predicting.pdf?sequence=2&isAllowed=y) 
   
-- `Code/project_scripts/create_ERP_measures.m` this file computes several measures used for the ERP, across various horizons as a function of years (~0.08y, 0.25y, 0.5y, 1y, 2y, 3y, 4y, 5y). The code follows by averaging across various model types for computing the equity risk premium. These models are as follows:
-    - Historical mean models
-    - Dividend discount mean models
-    - Cross-sectional regression models
-    - Time-series regression models
-    - Survey (e.g. Duke survey of CFOs)
-  
-  Export the ERP measures with recession dummy variables added
+- `Code/project_scripts/create_ERP_measures.m` this file computes several measures used for the ERP, across various horizons as a function of years (~0.08y, 0.25y, 0.5y, 1y, 2y, 3y, 4y, 5y). The code follows by averaging across various model types for computing the equity risk premium. These models are as follows: **_Historical mean models_**, **_Dividend discount mean models_**, **_Cross-sectional regression models_**, **_Time-series regression models_**, **_Survey_** (e.g. Duke survey of CFOs). Export the ERP measures with recession dummy variables added
  
 - `Code/project_scripts/erp_principal_components.m` this file runs a principal component analysis on each of the ERP model estimates (e.g. PCA of DDM), before being written to a .csv file with the addition of a recession dummy.
 
