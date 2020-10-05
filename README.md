@@ -19,17 +19,17 @@ The repository for the Equity Risk Premium has been moved to GitHub [here](https
 ### 4.1 	Outline
 The code base is mapped as a linear series of Matlab file, outlined below:
 
-- `Code/project_scripts/download_data.m` downloads all available data sources to be used in the model creation process, these datasets include the following processes
+- `Code/project_scripts/download_data.m` downloads all available data sources to be used in the model creation process, these datasets include the following processes.
    - Download WRDS data through SAS code, understand that this script may break, if this occurs the downloaded files must be done manually (refer to section 6)
    - Download assorted data from the internet, script begins with Python script and extend to various URLs ranging from the Federal Reserve to NYU Stern
    - Download FRED data, which include TIPS data, coproate bond yeilds,  short dated Treasury yeilds and recessions
      
-- `Code/project_scripts/NY_Fed_CM_DAPM.m` this file recreates the NY Fed ERP measures as produced in the Adrian, Crump and Moench (2014) paper [here](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1837531)
+- `Code/project_scripts/NY_Fed_CM_DAPM.m` this file recreates the NY Fed ERP measures as produced in the Adrian, Crump and Moench (2014) paper [here](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1837531).
 	- Download data from the web to compute the Fama French measures, the Shiller data which is formated to fit the Matlab envrionment (subject to Shiller data formating)
 	- Merge downloaded data from Fred tables and Shiller data into a large data table.
 	- Clean data files for Fama French, WRDS cmt data, and saving the data to a final table, cleaning and merging to match the dates  
   
-- `Code/project_scripts/Duke_CFO.m` load in Duke CFO data, performing data clearing (e.g. removing NaN) and selection before data exporting
+- `Code/project_scripts/Duke_CFO.m` load in Duke CFO data, performing data clearing (e.g. removing NaN) and selection before data exporting.
   
 - `Code/project_scripts/cay.m` this file recreates the CAY measure as produced by Lettau and Ludvigson (2001) paper [here](http://schwert.ssb.rochester.edu/f532/jf2001_ll.pdf)
 	- Downloaded Fred data for various variable figures, (e..g current dollars, personal income receipts)  before mathcing dates to allign dataset. 
@@ -41,8 +41,8 @@ The code base is mapped as a linear series of Matlab file, outlined below:
 	- Load time series from all data providers (e.g. CFO, Fama-French) compiling them into one timetable of a common time vector along some axis. 
 	- Generate Campbell-Thompson variables, a more detailied breakdown of the variable’s calculation can be found [here](https://dash.harvard.edu/bitstream/handle/1/2622619/Campbell_Predicting.pdf?sequence=2&isAllowed=y) 
   
-- `Code/project_scripts/create_ERP_measures.m` this file computes several measures used for the ERP, across various horizons as a function of years (~0.08y, 0.25y, 0.5y, 1y, 2y, 3y, 4y, 5y). The code follows by averaging across various model types for computing the equity risk premium. These models are as follows: **_Historical mean models_**, **_Dividend discount mean models_**, **_Cross-sectional regression models_**, **_Time-series regression models_**, **_Survey_** (e.g. Duke survey of CFOs). Export the ERP measures with recession dummy variables added
- 
+- `Code/project_scripts/create_ERP_measures.m` this file computes several measures used for the ERP, across various horizons as a function of years (~0.08y, 0.25y, 0.5y, 1y, 2y, 3y, 4y, 5y). The code follows by averaging across various model types for computing the equity risk premium. These models are as follows: **_Historical mean models_**, **_Dividend discount mean models_**, **_Cross-sectional regression models_**, **_Time-series regression models_**, **_Survey_** (e.g. Duke survey of CFOs). Export the ERP measures with recession dummy variables added.
+
 - `Code/project_scripts/erp_principal_components.m` this file runs a principal component analysis on each of the ERP model estimates (e.g. PCA of DDM), before being written to a .csv file with the addition of a recession dummy.
 
 - `Code/project_scripts/create_term_structure.m` this file constructs the term structure of the ERP, the expected excess returns over different investment horizons as outlined within the ERP paper. This includes the counter-factual measurements, which leaves expected stock returns unmodified but adjusts the risk free rates from their actual values to the average nominal bond yields over the period 1960 – 2013. Further details are highlighted within the paper.  
@@ -51,10 +51,10 @@ The code base is mapped as a linear series of Matlab file, outlined below:
   - Begin by testing the predictability of the ERP models, across the various time horizons computed, and selecting the best out-of-sample R-squared
   - Extend the regression process outlined above on the principal components, selecting the best by observing the out-of-sample R-squared
 
-- `Code/project_scripts/vintages.m` finally, we compare past vintages with our newly created figure, choosing to either extend or leave the vintage matrix unchanged before the values are exported to a .csv file for review
+- `Code/project_scripts/vintages.m` finally, we compare past vintages with our newly created figure, choosing to either extend or leave the vintage matrix unchanged before the values are exported to a .csv file for review.
 
 ### 4.2 `/Code`
-  This folder contains all the code to run the project. The code is sorted into a variety of folders. All the scripts that are called by the main file run_all.m are stored in Code\project_scripts. Functions used to compute model measures are stored in three separate folders, with separate sub-folder for additional language scripts.
+  This folder contains all the code to run the project. The code is sorted into a variety of folders. All the scripts that are called by the main file `run_all.m` are stored in `Code\project_scripts`. Functions used to compute model measures are stored in three separate folders, with separate sub-folder for additional language scripts.
 
 ### 4.3  `/Input`
   This folder contains all the raw data that is needed to run the ERP project, these include resources from FRED, WRDS as well as various online resources. 
@@ -77,7 +77,7 @@ The code base is mapped as a linear series of Matlab file, outlined below:
     % %    e.g. directory of file is stored in /home/rcerxr21/Work/ERP
     root_dir = [filesep ‘home’ filesep ‘rcerxr21’ filesep ‘Work’ filesep ‘TIC’] 
     ```
-2. After creating an account with FRED and receiving an API key, simply assign your API key to the variable `api` in the `main.m` file 
+2. After creating an account with FRED and receiving an API key, simply assign your API key to the variable `api` in the `main.m` file. 
 
 3. After creating a WRDS account, go to the WRDS web portal [here](https://wrds-cloud.wharton.upenn.edu/SASStudio/), you will be prompted to enter credentials for SAS, enter your user name and password for your WRDS account. Now create a folder structure that matches the following outline:
     ```
@@ -93,9 +93,9 @@ The code base is mapped as a linear series of Matlab file, outlined below:
 
 5. In the `run_all.m` file we are going to update the beaURL variable that reflects National Accounts (NIPA) data. Go to the Bureau of Economic Analysis website [here](https://apps.bea.gov/histdata/histChildLevels.cfm?HMI=7). Select (click) the most recent version of data (e.g. 2020, Q1) and then under the main tab right click on Section 2. Select “copy link address" and then paste that in place of the variable assignment.
 
-6. Run the `haver_data.do` Stata file locally on the SAN, located in `Code\san_scripts\` this should produce a file named `tb1m.csv`. Now load up WinSCP on your machine, navigate to the folder where the data was downloaded on the SAN and copy that data to the `\Input` folder in the project
+6. Run the `haver_data.do` Stata file locally on the SAN, located in `Code\san_scripts\` this should produce a file named `tb1m.csv`. Now load up WinSCP on your machine, navigate to the folder where the data was downloaded on the SAN and copy that data to the `\Input` folder in the project.
 
-7. Go to the CFO survey website, located [here](https://cfosurvey.fuqua.duke.edu/release/). Go to the current year and quarter and select United States High-Level Results. Then find the part in the pdf where they report the expected average annual S&P500 return over the next 1 and 10 years. The precise questions are: *“Over the next 10 years, I expect the average annual S&P 500 return will be: Expected return"* and *“Over the next year, I expect the average annual S&P 500 return will be: Expected return."* Add the mean surveyed return and the number of total surveyed to the `\Input\cfo_data.csv` for those two questions
+7. Go to the CFO survey website, located [here](https://cfosurvey.fuqua.duke.edu/release/). Go to the current year and quarter and select United States High-Level Results. Then find the part in the pdf where they report the expected average annual S&P500 return over the next 1 and 10 years. The precise questions are: *“Over the next 10 years, I expect the average annual S&P 500 return will be: Expected return"* and *“Over the next year, I expect the average annual S&P 500 return will be: Expected return."* Add the mean surveyed return and the number of total surveyed to the `\Input\cfo_data.csv` for those two questions.
 
 8. Run the `run_all.m` file in the RAN terminal, interactive environment or through the batch environment as follows:
     ```
