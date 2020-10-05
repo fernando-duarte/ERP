@@ -19,45 +19,29 @@ The repository for the Equity Risk Premium has been moved to GitHub [here](https
 ### 4.1 	Outline
 The code base is mapped as a linear series of Matlab file, outlined below:
 
-- **Code/project_scripts/download_data.m**
-
-  Downloads all available data sources to be used in the model creation process, these datasets include the following processes
+- `Code/project_scripts/download_data.m` downloads all available data sources to be used in the model creation process, these datasets include the following processes
    - Download WRDS data through SAS code, understand that this script may break, if this occurs the downloaded files must be done manually (refer to section 6)
    - Download assorted data from the internet, script begins with Python script and extend to various URLs ranging from the Federal Reserve to NYU Stern
    - Download FRED data, which include TIPS data, coproate bond yeilds,  short dated Treasury yeilds and recessions
      
-   All variables are cleared, except the main directory to free memory
-     
-- **Code/project_scripts/NY_Fed_CM_DAPM.m**
-  
-  This file recreates the NY Fed ERP measures as produced in the Adrian, Crump and Moench (2014) paper [here](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1837531)
+- `Code/project_scripts/NY_Fed_CM_DAPM.m` this file recreates the NY Fed ERP measures as produced in the Adrian, Crump and Moench (2014) paper [here](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1837531)
 	- Download data from the web to compute the Fama French measures, the Shiller data which is formated to fit the Matlab envrionment (subject to Shiller data formating)
 	- Merge downloaded data from Fred tables and Shiller data into a large data table.
-	- Clean data files for Fama French, WRDS cmt data, and saving the data to a final table, cleaning the data and merging to match the dates  
+	- Clean data files for Fama French, WRDS cmt data, and saving the data to a final table, cleaning and merging to match the dates  
   
-- **Code/project_scripts/Duke_CFO.m**
+- `Code/project_scripts/Duke_CFO.m` load in Duke CFO data, performing data clearing (e.g. removing NaN) and selection before data exporting
   
-  Load in Duke CFO data, performing data clearing (e.g. removing NaN) and selection before data exporting
-  
-- **Code/project_scripts/cay.m**
-  
-  This file recreates the CAY measure as produced by Lettau and Ludvigson (2001) paper [here](http://schwert.ssb.rochester.edu/f532/jf2001_ll.pdf)
+- `Code/project_scripts/cay.m` this file recreates the CAY measure as produced by Lettau and Ludvigson (2001) paper [here](http://schwert.ssb.rochester.edu/f532/jf2001_ll.pdf)
 	- Downloaded Fred data for various variable figures, (e..g current dollars, personal income receipts)  before mathcing dates to allign dataset. 
 	- Compute the C, A and Y measures to run regression on 8 lags to compute the CAY measures,  before exporting the fiures to .csv file. 
 	
-- **Code/project_scripts/collect_data.m**
-  
-  This file reads all the original data and converts it into Matlab financial time series objects, these include the Damodaran data [here](http://people.stern.nyu.edu/adamodar/pdfiles/papers/ERP2012.pdf), the CFO data, bond yield data, Fama-French data, the Shiller data, Thomson Reuters data, FRED data, CompuStat  data, Cay data, and equity/debt issuance data.
+- `Code/project_scripts/collect_data.m` this file reads all the original data and converts it into Matlab financial time series objects, these include the Damodaran data [here](http://people.stern.nyu.edu/adamodar/pdfiles/papers/ERP2012.pdf), the CFO data, bond yield data, Fama-French data, the Shiller data, Thomson Reuters data, FRED data, CompuStat  data, Cay data, and equity/debt issuance data.
 	
-- **Code/project_scripts/create_variables.m**
-  
-  This file homogenizes independent data measures, merging them all into a larger dataset to be used in constructing the ERP.
+- `Code/project_scripts/create_variables.m` this file homogenizes independent data measures, merging them all into a larger dataset to be used in constructing the ERP.
 	- Load time series from all data providers (e.g. CFO, Fama-French) compiling them into one timetable of a common time vector along some axis. 
 	- Generate Campbell-Thompson variables, a more detailied breakdown of the variable’s calculation can be found [here](https://dash.harvard.edu/bitstream/handle/1/2622619/Campbell_Predicting.pdf?sequence=2&isAllowed=y) 
   
-- **Code/project_scripts/create_ERP_measures.m**
-  
-  This file computes several measures used for the ERP, across various horizons as a function of years (~0.08y, 0.25y, 0.5y, 1y, 2y, 3y, 4y, 5y). The code follows by averaging across various model types for computing the equity risk premium. These models are as follows:
+- `Code/project_scripts/create_ERP_measures.m` this file computes several measures used for the ERP, across various horizons as a function of years (~0.08y, 0.25y, 0.5y, 1y, 2y, 3y, 4y, 5y). The code follows by averaging across various model types for computing the equity risk premium. These models are as follows:
     - Historical mean models
     - Dividend discount mean models
     - Cross-sectional regression models
@@ -66,33 +50,18 @@ The code base is mapped as a linear series of Matlab file, outlined below:
   
   Export the ERP measures with recession dummy variables added
  
-- **Code/project_scripts/erp_principal_components.m**
- 
-  This file runs a principal component analysis on each of the ERP model estimates (e.g. PCA of DDM), before being written to a .csv file with the addition of a recession dummy.
+- `Code/project_scripts/erp_principal_components.m` this file runs a principal component analysis on each of the ERP model estimates (e.g. PCA of DDM), before being written to a .csv file with the addition of a recession dummy.
 
-- **Code/project_scripts/create_term_structure.m**
-
-  This file constructs the term structure of the ERP, the expected excess returns over different investment horizons as outlined within the ERP paper. This includes the counter-factual measurements, which leaves expected stock returns unmodified but adjusts the risk free rates from their actual values to the average nominal bond yields over the period 1960 – 2013. Further details are highlighted within the paper.  
+- `Code/project_scripts/create_term_structure.m` this file constructs the term structure of the ERP, the expected excess returns over different investment horizons as outlined within the ERP paper. This includes the counter-factual measurements, which leaves expected stock returns unmodified but adjusts the risk free rates from their actual values to the average nominal bond yields over the period 1960 – 2013. Further details are highlighted within the paper.  
   
-- **Code/project_scripts/test_predictability.m**
-
-  This file runs regressions to test the predictability of the ERP models, as well as the principal components.
+- `Code/project_scripts/test_predictability.m` this file runs regressions to test the predictability of the ERP models, as well as the principal components.
   - Begin by testing the predictability of the ERP models, across the various time horizons computed, and selecting the best out-of-sample R-squared
   - Extend the regression process outlined above on the principal components, selecting the best by observing the out-of-sample R-squared
 
-- **Code/project_scripts/vintages.m**
-
-  Finally, we compare past vintages with our newly created figure, choosing to either extend or leave the vintage matrix unchanged before the values are exported to a .csv file for review
+- `Code/project_scripts/vintages.m` finally, we compare past vintages with our newly created figure, choosing to either extend or leave the vintage matrix unchanged before the values are exported to a .csv file for review
 
 ### 4.2 `/Code`
-  This folder contains all the code to run the project. The code is sorted into a variety of folders. All the scripts that are called by the main file run_all.m are stored in Code\project_scripts. Functions used to compute model measures are stored in three separate folders, with separate sub-folder for dealing with Python (Stata) scripts as well as the WRDS software. These are provided below:
- - Code\functions
- - Code\Matlabsubfunctions
- - Code\NYFed_functions
- - Code\project_scripts
- - Code\python_scripts
- - Code\stata_scripts 
- - Code\wrds_scripts 
+  This folder contains all the code to run the project. The code is sorted into a variety of folders. All the scripts that are called by the main file run_all.m are stored in Code\project_scripts. Functions used to compute model measures are stored in three separate folders, with separate sub-folder for additional language scripts.
 
 ### 4.3  `/Input`
   This folder contains all the raw data that is needed to run the ERP project, these include resources from FRED, WRDS as well as various online resources. 
