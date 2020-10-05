@@ -40,10 +40,10 @@ Notes:
 . * Clean CRSP data
 . *****************************************************************************
 . import delimited using "${indir}/crsp_m.txt", delim(" ") varnames(1) clear
-Note:  231,079,469 binary zeros were ignored in the source file.  The first
-       instance occurred on line 68,792.  Binary zeros are not valid in text
+Note:  233,045,549 binary zeros were ignored in the source file.  The first
+       instance occurred on line 34,300.  Binary zeros are not valid in text
        data.  Inspect your data carefully.
-(9 vars, 68,792 obs)
+(9 vars, 34,300 obs)
 
 . 
 . tostring date, replace
@@ -52,7 +52,7 @@ date was long now str8
 . gen date2 = date(date,"YMD")
 
 . replace date2 = mofd(date2)
-(68,758 real changes made)
+(34,282 real changes made)
 
 . format date2 %tmCCYYNN
 
@@ -64,43 +64,43 @@ date was long now str8
 
 . 
 . replace ret = "0" if ret == ""
-(119 real changes made)
+(103 real changes made)
 
 . replace ret = "" if inlist(ret,"E","D","C","B","A")
-(1,805 real changes made)
+(682 real changes made)
 
 . destring ret, replace
 ret: all characters numeric; replaced as double
-(1805 missing values generated)
+(682 missing values generated)
 
 . 
 . *****************************************************************************
 . * Generate ME and lagged ME
 . *****************************************************************************
 . gen prc_adj = prc
-(1,548 missing values generated)
+(613 missing values generated)
 
 . replace prc_adj = altprc if mi(prc_adj)
-(72 real changes made)
+(36 real changes made)
 
 . 
 . * Calculate ME using prices adjusted by altprc
 . gen ME = abs(prc_adj) * shrout if prc_adj ~= 0 & shrout ~= 0
-(1,477 missing values generated)
+(577 missing values generated)
 
 . duplicates drop permno date prc, force
 
 Duplicates in terms of permno date prc
 
-(15,112 observations deleted)
+(8,254 observations deleted)
 
 . tsset permno date
        panel variable:  permno (unbalanced)
-        time variable:  date, 192512 to 201912, but with gaps
+        time variable:  date, 192512 to 201912
                 delta:  1 month
 
 . gen l_ME = l.ME
-(1,305 missing values generated)
+(559 missing values generated)
 
 . 
 . *****************************************************************************
@@ -109,14 +109,14 @@ Duplicates in terms of permno date prc
 . bys permco date: egen sum_ME = sum(l_ME)
 
 . gen ret_vw = ret * l_ME / sum_ME if sum_ME ~= 0
-(1,364 missing values generated)
+(582 missing values generated)
 
 . bys permco date: egen avg_ret_vw = sum(ret_vw) if ~mi(ret_vw)   // value-weig
 > hted
-(1364 missing values generated)
+(582 missing values generated)
 
 . replace ret = avg_ret_vw
-(47,602 real changes made, 45 to missing)
+(23,141 real changes made, 42 to missing)
 
 . 
 . *****************************************************************************
@@ -130,7 +130,7 @@ Duplicates in terms of permco date
 
 . tsset permco date
        panel variable:  permco (unbalanced)
-        time variable:  date, 192512 to 201912, but with gaps
+        time variable:  date, 192512 to 201912
                 delta:  1 month
 
 . sort permco date
@@ -140,29 +140,29 @@ Duplicates in terms of permco date
 . * Calculate prior 2-12 returns
 . *****************************************************************************
 . gen ret_12_2 = (1 + L12.ret)
-(4,937 missing values generated)
+(2,193 missing values generated)
 
 . forval i = 2 / 11 {
   2.         replace ret_12_2 = ret_12_2 * (1 + L`i'.ret) 
   3. }
-(46,008 real changes made, 233 to missing)
-(45,797 real changes made, 15 to missing)
-(45,786 real changes made, 14 to missing)
-(45,788 real changes made, 13 to missing)
-(45,778 real changes made, 11 to missing)
-(45,777 real changes made, 8 to missing)
-(45,774 real changes made, 4 to missing)
-(45,776 real changes made, 4 to missing)
-(45,782 real changes made, 3 to missing)
-(45,778 real changes made, 3 to missing)
+(22,443 real changes made, 99 to missing)
+(22,354 real changes made, 5 to missing)
+(22,356 real changes made, 5 to missing)
+(22,358 real changes made, 5 to missing)
+(22,359 real changes made, 3 to missing)
+(22,362 real changes made, 2 to missing)
+(22,357 real changes made, 3 to missing)
+(22,359 real changes made, 3 to missing)
+(22,369 real changes made, 2 to missing)
+(22,372 real changes made, 3 to missing)
 
 . replace ret_12_2 = (ret_12_2 - 1) * 100
-(48,435 real changes made)
+(23,723 real changes made)
 
 . 
 . * replace with missing value if the criterion aren't met
 . replace ret_12_2 = . if mi(l13.prc) | mi(l2.ret) | mi(l_ME) | mi(prc)
-(92 real changes made, 92 to missing)
+(46 real changes made, 46 to missing)
 
 . 
 . *****************************************************************************
@@ -171,12 +171,12 @@ Duplicates in terms of permco date
 . * keep if stock is ordinary common and either "not further defined" or "need 
 > not be further defined" (as in Fama-French)
 . keep if shrcd==10 | shrcd==11
-(0 observations deleted)
+(1 observation deleted)
 
 . 
 . * keep if traded in NYSE, AMEX or Nasdaq only
 . keep if exchcd==1 | exchcd==2 | exchcd==3
-(1,001 observations deleted)
+(401 observations deleted)
 
 . 
 . *****************************************************************************
@@ -186,7 +186,7 @@ Duplicates in terms of permco date
 
 . import delimited "${indir}/Prior_2-12_Breakpoints.txt", ///
 > delimiter(space, collapse) varnames(nonames) rowrange(4) clear 
-(22 vars, 1,123 obs)
+(22 vars, 1,125 obs)
 
 . 
 . rename v2 count
@@ -203,7 +203,7 @@ v1 was long now str6
 . gen date = date(v1,"YM")
 
 . replace date = ym(year(date),month(date))
-(1,122 real changes made)
+(1,124 real changes made)
 
 . format date %tm
 
@@ -221,18 +221,18 @@ file temp.tmp saved
 
     Result                           # of obs.
     -----------------------------------------
-    not matched                           215
-        from master                       215  
+    not matched                           107
+        from master                       107  
         from using                          0  
 
-    matched                            52,464  
+    matched                            25,537  
     -----------------------------------------
 
 . 
 . sort permco date
 
 . gen p1 = 1 if ret_12_2 <= prct10 & ~mi(prct10)
-(44,315 missing values generated)
+(21,650 missing values generated)
 
 . forval i = 2 / 10 {
   2.         local percentile = `i' * 10
@@ -240,19 +240,19 @@ file temp.tmp saved
   4.         gen p`i' = 1 if ret_12_2 > prct`percentile10' & ret_12_2 <= prct`p
 > ercentile'
   5. }
-(47,687 missing values generated)
-(48,467 missing values generated)
-(48,620 missing values generated)
-(48,735 missing values generated)
-(48,962 missing values generated)
-(48,931 missing values generated)
-(48,776 missing values generated)
-(48,170 missing values generated)
-(46,002 missing values generated)
+(23,165 missing values generated)
+(23,609 missing values generated)
+(23,690 missing values generated)
+(23,705 missing values generated)
+(23,827 missing values generated)
+(23,752 missing values generated)
+(23,713 missing values generated)
+(23,479 missing values generated)
+(22,296 missing values generated)
 
 . 
 . replace ret = ret * 100
-(49,265 real changes made)
+(23,920 real changes made)
 
 . 
 . *****************************************************************************

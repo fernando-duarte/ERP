@@ -1,4 +1,5 @@
 date,Real_earnings_growth,YoY_change_in_expectations_of_EPS,zeros
+01-Nov-1971,-23.38,,0
 01-Dec-1971,-23.61,,0
 01-Jan-1972,7.02,,0
 01-Feb-1972,3.95,,0
@@ -582,5 +583,7 @@ date,Real_earnings_growth,YoY_change_in_expectations_of_EPS,zeros
 01-Apr-2020,-3.72,5.4,0
 01-May-2020,0.06,-12.17,0
 01-Jun-2020,2.37,-19.46,0
-01-Jul-2020,-9,,0
-01-Aug-2020,-6.99,,0
+01-Jul-2020,-9,-19.75,0
+01-Aug-2020,-6.99,-18.9,0
+01-Sep-2020,-8.02,-16.35,0
+01-Oct-2020,16.99,,0
