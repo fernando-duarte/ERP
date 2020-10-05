@@ -1,0 +1,359 @@
+
+  ___  ____  ____  ____  ____ (R)
+ /__    /   ____/   /   ____/
+___/   /   /___/   /   /___/   16.0   Copyright 1985-2019 StataCorp LLC
+  Statistics/Data Analysis            StataCorp
+                                      4905 Lakeway Drive
+     Special Edition                  College Station, Texas 77845 USA
+                                      800-STATA-PC        http://www.stata.com
+                                      979-696-4600        stata@stata.com
+                                      979-696-4601 (fax)
+
+4-user Stata network perpetual license:
+       Serial number:  501606205920
+         Licensed to:  FRBNY
+                       Research
+
+Notes:
+      1.  Stata is running in batch mode.
+      2.  Unicode is supported; see help unicode_advice.
+      3.  Maximum number of variables is set to 5000; see help set_maxvar.
+
+. do "replicate_mom_portfolios.do" 
+
+. cd ..
+/home/rcerxr21/FernandoWork/ERP_GIT/Code
+
+. cd ..
+/home/rcerxr21/FernandoWork/ERP_GIT
+
+. 
+. global dir `c(pwd)'
+
+. global indir = "${dir}/Input"
+
+. 
+. version 16
+
+. 
+. *****************************************************************************
+. * Clean CRSP data
+. *****************************************************************************
+. import delimited using "${indir}/crsp_m.txt", delim(" ") varnames(1) clear
+Note:  231,079,469 binary zeros were ignored in the source file.  The first
+       instance occurred on line 68,792.  Binary zeros are not valid in text
+       data.  Inspect your data carefully.
+(9 vars, 68,792 obs)
+
+. 
+. tostring date, replace
+date was long now str8
+
+. gen date2 = date(date,"YMD")
+
+. replace date2 = mofd(date2)
+(68,758 real changes made)
+
+. format date2 %tmCCYYNN
+
+. drop date
+
+. rename date2 date
+
+. order date, after(permno)
+
+. 
+. replace ret = "0" if ret == ""
+(119 real changes made)
+
+. replace ret = "" if inlist(ret,"E","D","C","B","A")
+(1,805 real changes made)
+
+. destring ret, replace
+ret: all characters numeric; replaced as double
+(1805 missing values generated)
+
+. 
+. *****************************************************************************
+. * Generate ME and lagged ME
+. *****************************************************************************
+. gen prc_adj = prc
+(1,548 missing values generated)
+
+. replace prc_adj = altprc if mi(prc_adj)
+(72 real changes made)
+
+. 
+. * Calculate ME using prices adjusted by altprc
+. gen ME = abs(prc_adj) * shrout if prc_adj ~= 0 & shrout ~= 0
+(1,477 missing values generated)
+
+. duplicates drop permno date prc, force
+
+Duplicates in terms of permno date prc
+
+(15,112 observations deleted)
+
+. tsset permno date
+       panel variable:  permno (unbalanced)
+        time variable:  date, 192512 to 201912, but with gaps
+                delta:  1 month
+
+. gen l_ME = l.ME
+(1,305 missing values generated)
+
+. 
+. *****************************************************************************
+. * Generate average returns for firms with multiple stocks
+. *****************************************************************************
+. bys permco date: egen sum_ME = sum(l_ME)
+
+. gen ret_vw = ret * l_ME / sum_ME if sum_ME ~= 0
+(1,364 missing values generated)
+
+. bys permco date: egen avg_ret_vw = sum(ret_vw) if ~mi(ret_vw)   // value-weig
+> hted
+(1364 missing values generated)
+
+. replace ret = avg_ret_vw
+(47,602 real changes made, 45 to missing)
+
+. 
+. *****************************************************************************
+. * Keep one observation for each permco-date pair
+. *****************************************************************************
+. duplicates drop permco date, force
+
+Duplicates in terms of permco date
+
+(0 observations are duplicates)
+
+. tsset permco date
+       panel variable:  permco (unbalanced)
+        time variable:  date, 192512 to 201912, but with gaps
+                delta:  1 month
+
+. sort permco date
+
+. 
+. *****************************************************************************
+. * Calculate prior 2-12 returns
+. *****************************************************************************
+. gen ret_12_2 = (1 + L12.ret)
+(4,937 missing values generated)
+
+. forval i = 2 / 11 {
+  2.         replace ret_12_2 = ret_12_2 * (1 + L`i'.ret) 
+  3. }
+(46,008 real changes made, 233 to missing)
+(45,797 real changes made, 15 to missing)
+(45,786 real changes made, 14 to missing)
+(45,788 real changes made, 13 to missing)
+(45,778 real changes made, 11 to missing)
+(45,777 real changes made, 8 to missing)
+(45,774 real changes made, 4 to missing)
+(45,776 real changes made, 4 to missing)
+(45,782 real changes made, 3 to missing)
+(45,778 real changes made, 3 to missing)
+
+. replace ret_12_2 = (ret_12_2 - 1) * 100
+(48,435 real changes made)
+
+. 
+. * replace with missing value if the criterion aren't met
+. replace ret_12_2 = . if mi(l13.prc) | mi(l2.ret) | mi(l_ME) | mi(prc)
+(92 real changes made, 92 to missing)
+
+. 
+. *****************************************************************************
+. * Keep common stocks in NYSE, NASDAQ and AMEX
+. *****************************************************************************
+. * keep if stock is ordinary common and either "not further defined" or "need 
+> not be further defined" (as in Fama-French)
+. keep if shrcd==10 | shrcd==11
+(0 observations deleted)
+
+. 
+. * keep if traded in NYSE, AMEX or Nasdaq only
+. keep if exchcd==1 | exchcd==2 | exchcd==3
+(1,001 observations deleted)
+
+. 
+. *****************************************************************************
+. * Use French's breakpoints to classify portfolios
+. *****************************************************************************
+. preserve
+
+. import delimited "${indir}/Prior_2-12_Breakpoints.txt", ///
+> delimiter(space, collapse) varnames(nonames) rowrange(4) clear 
+(22 vars, 1,123 obs)
+
+. 
+. rename v2 count
+
+. forval i = 3 / 22 {
+  2.         local percentile = (`i' - 2) * 5
+  3.         rename v`i' prct`percentile'
+  4. }
+
+. 
+. tostring v1, replace
+v1 was long now str6
+
+. gen date = date(v1,"YM")
+
+. replace date = ym(year(date),month(date))
+(1,122 real changes made)
+
+. format date %tm
+
+. drop v1
+
+. 
+. save temp.tmp, replace
+(note: file temp.tmp not found)
+file temp.tmp saved
+
+. 
+. restore
+
+. merge m:1 date using temp.tmp, keep(1 3) nogen
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                           215
+        from master                       215  
+        from using                          0  
+
+    matched                            52,464  
+    -----------------------------------------
+
+. 
+. sort permco date
+
+. gen p1 = 1 if ret_12_2 <= prct10 & ~mi(prct10)
+(44,315 missing values generated)
+
+. forval i = 2 / 10 {
+  2.         local percentile = `i' * 10
+  3.         local percentile10 = (`i' - 1) * 10
+  4.         gen p`i' = 1 if ret_12_2 > prct`percentile10' & ret_12_2 <= prct`p
+> ercentile'
+  5. }
+(47,687 missing values generated)
+(48,467 missing values generated)
+(48,620 missing values generated)
+(48,735 missing values generated)
+(48,962 missing values generated)
+(48,931 missing values generated)
+(48,776 missing values generated)
+(48,170 missing values generated)
+(46,002 missing values generated)
+
+. 
+. replace ret = ret * 100
+(49,265 real changes made)
+
+. 
+. *****************************************************************************
+. * Generate equal- and value-weighted portfolio returns
+. *****************************************************************************
+. * Equal-weighted
+. cap rm "${indir}/10_Portfolios_Prior_12_2_Equal_weighted.dta"
+
+. forval i = 1 / 10 {
+  2.         preserve
+  3.         collapse (mean) ret if p`i' == 1, by(date) cw
+  4.         rename ret ret_`i'_rep
+  5.         cap merge 1:1 date using "${indir}/10_Portfolios_Prior_12_2_Equal_
+> weighted", nogen
+  6.         order _all, sequential
+  7.         save "${indir}/10_Portfolios_Prior_12_2_Equal_weighted", replace
+  8.         restore
+  9. }
+(note: file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_
+> Equal_weighted.dta not found)
+file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Equal_w
+> eighted.dta saved
+file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Equal_w
+> eighted.dta saved
+file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Equal_w
+> eighted.dta saved
+file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Equal_w
+> eighted.dta saved
+file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Equal_w
+> eighted.dta saved
+file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Equal_w
+> eighted.dta saved
+file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Equal_w
+> eighted.dta saved
+file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Equal_w
+> eighted.dta saved
+file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Equal_w
+> eighted.dta saved
+file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Equal_w
+> eighted.dta saved
+
+. 
+. * Value-weighted
+. cap rm "${indir}/10_Portfolios_Prior_12_2_Value_weighted.dta"
+
+. forval i = 1 / 10 {
+  2.         preserve
+  3.         collapse (mean) ret if p`i' == 1 [w = l_ME], by(date) cw
+  4.         rename ret ret_`i'_rep
+  5.         cap merge 1:1 date using "${indir}/10_Portfolios_Prior_12_2_Value_
+> weighted", nogen
+  6.         order _all, sequential
+  7.         save "${indir}/10_Portfolios_Prior_12_2_Value_weighted", replace
+  8.         restore
+  9. }
+(analytic weights assumed)
+(note: file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_
+> Value_weighted.dta not found)
+file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Value_w
+> eighted.dta saved
+(analytic weights assumed)
+file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Value_w
+> eighted.dta saved
+(analytic weights assumed)
+file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Value_w
+> eighted.dta saved
+(analytic weights assumed)
+file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Value_w
+> eighted.dta saved
+(analytic weights assumed)
+file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Value_w
+> eighted.dta saved
+(analytic weights assumed)
+file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Value_w
+> eighted.dta saved
+(analytic weights assumed)
+file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Value_w
+> eighted.dta saved
+(analytic weights assumed)
+file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Value_w
+> eighted.dta saved
+(analytic weights assumed)
+file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Value_w
+> eighted.dta saved
+(analytic weights assumed)
+file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Value_w
+> eighted.dta saved
+
+. 
+. use "${indir}/10_Portfolios_Prior_12_2_Equal_weighted", clear
+
+. outsheet using "${indir}/10_Portfolios_Prior_12_2_Equal_weighted.txt", replac
+> e
+
+. 
+. use "${indir}/10_Portfolios_Prior_12_2_Value_weighted", clear
+
+. outsheet using "${indir}/10_Portfolios_Prior_12_2_Value_weighted.txt", replac
+> e
+
+. rm temp.tmp
+
+. 
+end of do-file

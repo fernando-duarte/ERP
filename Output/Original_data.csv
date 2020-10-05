@@ -2,175 +2,175 @@ Names,Source,Frequency,FirstPeriod,LastPeriod
 sentiment,"Sentiment measure from Investor Sentiment in the Stock Market, Journal of Economic Perspectives, 2007",monthly,01-Jul-1965,01-Dec-2018
 equity_issuance,"Equity issuance",monthly,01-Jan-1958,01-Dec-2018
 debt_issuance,"Debt issuance",monthly,01-Jan-1958,01-Dec-2018
-cay,"CAY variable from Lettau and Ludvingson ""Understanding Trend and Cycle in Asset Values: Reevaluating the Wealth Effect on Consumption,"" American Economic Review, 94 (1), 279-299, March 2004",quarterly,01-Jan-1952,01-Jul-2019
+cay,"CAY variable from Lettau and Ludvingson ""Understanding Trend and Cycle in Asset Values: Reevaluating the Wealth Effect on Consumption,"" American Economic Review, 94 (1), 279-299, March 2004",quarterly,01-Oct-1952,01-Jan-2020
 premium1yr,"one-year ahead ERP from CFO survey",quarterly,01-Apr-2000,01-Oct-2019
 premium10yr,"ten-year ahead ERP from CFO survey",quarterly,01-Apr-2000,01-Oct-2019
-book_per_share,"Book value per share",annual,31-Dec-1977,31-Dec-2018
-sp500_price,"S&P 500 closing price",monthly,31-Jan-1962,31-Jan-2020
+book_per_share,"Book value per share",annual,31-Dec-1977,31-Dec-2019
+sp500_price,"S&P 500 closing price",monthly,31-Jan-1962,31-Jul-2020
 damodaran_ddm,"ERP from a dividend discount model",annual,01-Dec-1961,01-Dec-2018
 damodaran_fcfe,"ERP from a dividend discount model using free cash flow",annual,01-Dec-1961,01-Dec-2019
-ff_p1,"Portfolio 1 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Dec-2019
-ff_p2,"Portfolio 2 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Dec-2019
-ff_p3,"Portfolio 3 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Dec-2019
-ff_p4,"Portfolio 4 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Dec-2019
-ff_p5,"Portfolio 5 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Dec-2019
-ff_p6,"Portfolio 6 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Dec-2019
-ff_p7,"Portfolio 7 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Dec-2019
-ff_p8,"Portfolio 8 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Dec-2019
-ff_p9,"Portfolio 9 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Dec-2019
-ff_p10,"Portfolio 10 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Dec-2019
-ff_p11,"Portfolio 11 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Dec-2019
-ff_p12,"Portfolio 12 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Dec-2019
-ff_p13,"Portfolio 13 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Dec-2019
-ff_p14,"Portfolio 14 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Dec-2019
-ff_p15,"Portfolio 15 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Dec-2019
-ff_p16,"Portfolio 16 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Dec-2019
-ff_p17,"Portfolio 17 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Dec-2019
-ff_p18,"Portfolio 18 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Dec-2019
-ff_p19,"Portfolio 19 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Dec-2019
-ff_p20,"Portfolio 20 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Dec-2019
-ff_p21,"Portfolio 21 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Dec-2019
-ff_p22,"Portfolio 22 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Dec-2019
-ff_p23,"Portfolio 23 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Dec-2019
-ff_p24,"Portfolio 24 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Dec-2019
-ff_p25,"Portfolio 25 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Dec-2019
-MktRF,"Realized excess returns for the market",monthly,01-Jul-1926,01-Dec-2019
-SMB,"Size factor",monthly,01-Jul-1926,01-Dec-2019
-HML,"Book-to-market factor",monthly,01-Jul-1926,01-Dec-2019
-RF,"risk free rate",monthly,01-Jul-1926,01-Dec-2019
-BAA_AAA,"Baa - Aaa",monthly,01-Jan-1919,01-Jan-2020
-recession,"NBER recession ind",monthly,01-Jan-1900,01-Jan-2020
-TB3MS,"yield on a 3 month bond",monthly,01-Jan-1934,01-Jan-2020
-TB6MS,"yield on a 6 month bond",monthly,01-Dec-1958,01-Jan-2020
-RLONG,"ten year yield",monthly,01-Jan-1962,01-Feb-2020
-mom_p1,"Portfolio 1 of momentum portfolios",monthly,01-Jan-1927,01-Dec-2019
-mom_p2,"Portfolio 2 of momentum portfolios",monthly,01-Jan-1927,01-Dec-2019
-mom_p3,"Portfolio 3 of momentum portfolios",monthly,01-Jan-1927,01-Dec-2019
-mom_p4,"Portfolio 4 of momentum portfolios",monthly,01-Jan-1927,01-Dec-2019
-mom_p5,"Portfolio 5 of momentum portfolios",monthly,01-Jan-1927,01-Dec-2019
-mom_p6,"Portfolio 6 of momentum portfolios",monthly,01-Jan-1927,01-Dec-2019
-mom_p7,"Portfolio 7 of momentum portfolios",monthly,01-Jan-1927,01-Dec-2019
-mom_p8,"Portfolio 8 of momentum portfolios",monthly,01-Jan-1927,01-Dec-2019
-mom_p9,"Portfolio 9 of momentum portfolios",monthly,01-Jan-1927,01-Dec-2019
-mom_p10,"Portfolio 10 of momentum portfolios",monthly,01-Jan-1927,01-Dec-2019
-mom,"Momentum factor",monthly,01-Jan-1927,01-Dec-2019
-NYFed_ERP,"ERP as constructed in Adrian, Crump and Moench (2013)",monthly,01-Jan-1964,01-Dec-2019
-CAPE,"Cyclycally Adjusted Price-Earnings ratio",monthly,01-Jan-1900,01-Feb-2020
-CPI,"Consumer Price Index",monthly,01-Jan-1900,01-Feb-2020
-D,"Nominal dividends for the S&P 500",monthly,01-Jan-1900,01-Dec-2019
-E,"Nominal earnings for the S&P 500",monthly,01-Jan-1900,01-Dec-2019
-P,"Nominal price for the S&P 500",monthly,01-Jan-1900,01-Feb-2020
-RateGS10,"10 year nominal treasury yield",monthly,01-Jan-1900,01-Feb-2020
-RealDividend,"Real dividends for the S&P 500",monthly,01-Jan-1900,01-Dec-2019
-RealEarnings,"Real earnings for the S&P 500",monthly,01-Jan-1900,01-Dec-2019
-RealPrice,"Real price for the S&P 500",monthly,01-Jan-1900,01-Feb-2020
-EPS,"Realized Earnings per Share for the S&P 500",annual,31-Dec-1992,31-Dec-2018
-EPS_y1,"Mean analyst forecast for Earnings per share for the S&P500 for the current year",monthly,14-May-1992,19-Sep-2019
-EPS_y2,"Mean analyst forecast for Earnings per share for the S&P500 for next year",monthly,14-May-1992,19-Sep-2019
-EPS_y3,"Mean analyst forecast for Earnings per share for the S&P500 for 2 years ahead",monthly,14-May-1992,19-Sep-2019
-EPS_y4,"Mean analyst forecast for Earnings per share for the S&P500 for 3 years ahead",monthly,14-May-1992,19-Sep-2019
-EPS_y5,"Mean analyst forecast for Earnings per share for the S&P500 for 4 years ahead",monthly,14-May-1992,19-Sep-2019
-FII10,"yield on a 10 year TIPS",monthly,01-Jan-2003,01-Jan-2020
-FII20,"yield on a 20 year TIPS",monthly,01-Jul-2004,01-Jan-2020
-FII30,"yield on a 30 year TIPS",monthly,01-Feb-2010,01-Jan-2020
-FII5,"yield on a 5 year TIPS",monthly,01-Jan-2003,01-Jan-2020
-FII7,"yield on a 7 year TIPS",monthly,01-Jan-2003,01-Jan-2020
-BETA0,"Bond Yields",monthly,14-Jun-1961,07-Feb-2020
-BETA1,"Bond Yields",monthly,14-Jun-1961,07-Feb-2020
-BETA2,"Bond Yields",monthly,14-Jun-1961,07-Feb-2020
-BETA3,"Bond Yields",monthly,14-Jun-1961,07-Feb-2020
-SVEN1F01,"Bond Yields",monthly,14-Jun-1961,07-Feb-2020
-SVEN1F04,"Bond Yields",monthly,14-Jun-1961,07-Feb-2020
-SVEN1F09,"Bond Yields",monthly,16-Aug-1971,07-Feb-2020
-SVENF01,"Bond Yields",monthly,14-Jun-1961,07-Feb-2020
-SVENF02,"Bond Yields",monthly,14-Jun-1961,07-Feb-2020
-SVENF03,"Bond Yields",monthly,14-Jun-1961,07-Feb-2020
-SVENF04,"Bond Yields",monthly,14-Jun-1961,07-Feb-2020
-SVENF05,"Bond Yields",monthly,14-Jun-1961,07-Feb-2020
-SVENF06,"Bond Yields",monthly,14-Jun-1961,07-Feb-2020
-SVENF07,"Bond Yields",monthly,14-Jun-1961,07-Feb-2020
-SVENF08,"Bond Yields",monthly,16-Aug-1971,07-Feb-2020
-SVENF09,"Bond Yields",monthly,16-Aug-1971,07-Feb-2020
-SVENF10,"Bond Yields",monthly,16-Aug-1971,07-Feb-2020
-SVENF11,"Bond Yields",monthly,15-Nov-1971,07-Feb-2020
-SVENF12,"Bond Yields",monthly,15-Nov-1971,07-Feb-2020
-SVENF13,"Bond Yields",monthly,15-Nov-1971,07-Feb-2020
-SVENF14,"Bond Yields",monthly,15-Nov-1971,07-Feb-2020
-SVENF15,"Bond Yields",monthly,15-Nov-1971,07-Feb-2020
-SVENF16,"Bond Yields",monthly,02-Jul-1981,07-Feb-2020
-SVENF17,"Bond Yields",monthly,02-Jul-1981,07-Feb-2020
-SVENF18,"Bond Yields",monthly,02-Jul-1981,07-Feb-2020
-SVENF19,"Bond Yields",monthly,02-Jul-1981,07-Feb-2020
-SVENF20,"Bond Yields",monthly,02-Jul-1981,07-Feb-2020
-SVENF21,"Bond Yields",monthly,25-Nov-1985,07-Feb-2020
-SVENF22,"Bond Yields",monthly,25-Nov-1985,07-Feb-2020
-SVENF23,"Bond Yields",monthly,25-Nov-1985,07-Feb-2020
-SVENF24,"Bond Yields",monthly,25-Nov-1985,07-Feb-2020
-SVENF25,"Bond Yields",monthly,25-Nov-1985,07-Feb-2020
-SVENF26,"Bond Yields",monthly,25-Nov-1985,07-Feb-2020
-SVENF27,"Bond Yields",monthly,25-Nov-1985,07-Feb-2020
-SVENF28,"Bond Yields",monthly,25-Nov-1985,07-Feb-2020
-SVENF29,"Bond Yields",monthly,25-Nov-1985,07-Feb-2020
-SVENF30,"Bond Yields",monthly,25-Nov-1985,07-Feb-2020
-SVENPY01,"Bond Yields",monthly,14-Jun-1961,07-Feb-2020
-SVENPY02,"Bond Yields",monthly,14-Jun-1961,07-Feb-2020
-SVENPY03,"Bond Yields",monthly,14-Jun-1961,07-Feb-2020
-SVENPY04,"Bond Yields",monthly,14-Jun-1961,07-Feb-2020
-SVENPY05,"Bond Yields",monthly,14-Jun-1961,07-Feb-2020
-SVENPY06,"Bond Yields",monthly,14-Jun-1961,07-Feb-2020
-SVENPY07,"Bond Yields",monthly,14-Jun-1961,07-Feb-2020
-SVENPY08,"Bond Yields",monthly,16-Aug-1971,07-Feb-2020
-SVENPY09,"Bond Yields",monthly,16-Aug-1971,07-Feb-2020
-SVENPY10,"Bond Yields",monthly,16-Aug-1971,07-Feb-2020
-SVENPY11,"Bond Yields",monthly,15-Nov-1971,07-Feb-2020
-SVENPY12,"Bond Yields",monthly,15-Nov-1971,07-Feb-2020
-SVENPY13,"Bond Yields",monthly,15-Nov-1971,07-Feb-2020
-SVENPY14,"Bond Yields",monthly,15-Nov-1971,07-Feb-2020
-SVENPY15,"Bond Yields",monthly,15-Nov-1971,07-Feb-2020
-SVENPY16,"Bond Yields",monthly,02-Jul-1981,07-Feb-2020
-SVENPY17,"Bond Yields",monthly,02-Jul-1981,07-Feb-2020
-SVENPY18,"Bond Yields",monthly,02-Jul-1981,07-Feb-2020
-SVENPY19,"Bond Yields",monthly,02-Jul-1981,07-Feb-2020
-SVENPY20,"Bond Yields",monthly,02-Jul-1981,07-Feb-2020
-SVENPY21,"Bond Yields",monthly,25-Nov-1985,07-Feb-2020
-SVENPY22,"Bond Yields",monthly,25-Nov-1985,07-Feb-2020
-SVENPY23,"Bond Yields",monthly,25-Nov-1985,07-Feb-2020
-SVENPY24,"Bond Yields",monthly,25-Nov-1985,07-Feb-2020
-SVENPY25,"Bond Yields",monthly,25-Nov-1985,07-Feb-2020
-SVENPY26,"Bond Yields",monthly,25-Nov-1985,07-Feb-2020
-SVENPY27,"Bond Yields",monthly,25-Nov-1985,07-Feb-2020
-SVENPY28,"Bond Yields",monthly,25-Nov-1985,07-Feb-2020
-SVENPY29,"Bond Yields",monthly,25-Nov-1985,07-Feb-2020
-SVENPY30,"Bond Yields",monthly,25-Nov-1985,07-Feb-2020
-SVENY01,"Bond Yields",monthly,14-Jun-1961,07-Feb-2020
-SVENY02,"Bond Yields",monthly,14-Jun-1961,07-Feb-2020
-SVENY03,"Bond Yields",monthly,14-Jun-1961,07-Feb-2020
-SVENY04,"Bond Yields",monthly,14-Jun-1961,07-Feb-2020
-SVENY05,"Bond Yields",monthly,14-Jun-1961,07-Feb-2020
-SVENY06,"Bond Yields",monthly,14-Jun-1961,07-Feb-2020
-SVENY07,"Bond Yields",monthly,14-Jun-1961,07-Feb-2020
-SVENY08,"Bond Yields",monthly,16-Aug-1971,07-Feb-2020
-SVENY09,"Bond Yields",monthly,16-Aug-1971,07-Feb-2020
-SVENY10,"Bond Yields",monthly,16-Aug-1971,07-Feb-2020
-SVENY11,"Bond Yields",monthly,15-Nov-1971,07-Feb-2020
-SVENY12,"Bond Yields",monthly,15-Nov-1971,07-Feb-2020
-SVENY13,"Bond Yields",monthly,15-Nov-1971,07-Feb-2020
-SVENY14,"Bond Yields",monthly,15-Nov-1971,07-Feb-2020
-SVENY15,"Bond Yields",monthly,15-Nov-1971,07-Feb-2020
-SVENY16,"Bond Yields",monthly,02-Jul-1981,07-Feb-2020
-SVENY17,"Bond Yields",monthly,02-Jul-1981,07-Feb-2020
-SVENY18,"Bond Yields",monthly,02-Jul-1981,07-Feb-2020
-SVENY19,"Bond Yields",monthly,02-Jul-1981,07-Feb-2020
-SVENY20,"Bond Yields",monthly,02-Jul-1981,07-Feb-2020
-SVENY21,"Bond Yields",monthly,25-Nov-1985,07-Feb-2020
-SVENY22,"Bond Yields",monthly,25-Nov-1985,07-Feb-2020
-SVENY23,"Bond Yields",monthly,25-Nov-1985,07-Feb-2020
-SVENY24,"Bond Yields",monthly,25-Nov-1985,07-Feb-2020
-SVENY25,"Bond Yields",monthly,25-Nov-1985,07-Feb-2020
-SVENY26,"Bond Yields",monthly,25-Nov-1985,07-Feb-2020
-SVENY27,"Bond Yields",monthly,25-Nov-1985,07-Feb-2020
-SVENY28,"Bond Yields",monthly,25-Nov-1985,07-Feb-2020
-SVENY29,"Bond Yields",monthly,25-Nov-1985,07-Feb-2020
-SVENY30,"Bond Yields",monthly,25-Nov-1985,07-Feb-2020
-TAU1,"Bond Yields",monthly,14-Jun-1961,07-Feb-2020
-TAU2,"Bond Yields",monthly,14-Jun-1961,07-Feb-2020
+ff_p1,"Portfolio 1 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Jun-2020
+ff_p2,"Portfolio 2 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Jun-2020
+ff_p3,"Portfolio 3 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Jun-2020
+ff_p4,"Portfolio 4 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Jun-2020
+ff_p5,"Portfolio 5 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Jun-2020
+ff_p6,"Portfolio 6 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Jun-2020
+ff_p7,"Portfolio 7 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Jun-2020
+ff_p8,"Portfolio 8 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Jun-2020
+ff_p9,"Portfolio 9 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Jun-2020
+ff_p10,"Portfolio 10 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Jun-2020
+ff_p11,"Portfolio 11 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Jun-2020
+ff_p12,"Portfolio 12 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Jun-2020
+ff_p13,"Portfolio 13 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Jun-2020
+ff_p14,"Portfolio 14 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Jun-2020
+ff_p15,"Portfolio 15 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Jun-2020
+ff_p16,"Portfolio 16 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Jun-2020
+ff_p17,"Portfolio 17 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Jun-2020
+ff_p18,"Portfolio 18 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Jun-2020
+ff_p19,"Portfolio 19 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Jun-2020
+ff_p20,"Portfolio 20 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Jun-2020
+ff_p21,"Portfolio 21 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Jun-2020
+ff_p22,"Portfolio 22 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Jun-2020
+ff_p23,"Portfolio 23 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Jun-2020
+ff_p24,"Portfolio 24 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Jun-2020
+ff_p25,"Portfolio 25 of size and bm sorted portfolios",monthly,01-Jul-1926,01-Jun-2020
+MktRF,"Realized excess returns for the market",monthly,01-Jul-1926,01-Jun-2020
+SMB,"Size factor",monthly,01-Jul-1926,01-Jun-2020
+HML,"Book-to-market factor",monthly,01-Jul-1926,01-Jun-2020
+RF,"risk free rate",monthly,01-Jul-1926,01-Jun-2020
+BAA_AAA,"Baa - Aaa",monthly,01-Jan-1919,01-Jul-2020
+recession,"NBER recession ind",monthly,01-Jan-1900,01-Jul-2020
+TB3MS,"yield on a 3 month bond",monthly,01-Jan-1934,01-Jul-2020
+TB6MS,"yield on a 6 month bond",monthly,01-Dec-1958,01-Jul-2020
+RLONG,"ten year yield",monthly,01-Jan-1962,01-Aug-2020
+mom_p1,"Portfolio 1 of momentum portfolios",monthly,01-Jan-1927,01-Jun-2020
+mom_p2,"Portfolio 2 of momentum portfolios",monthly,01-Jan-1927,01-Jun-2020
+mom_p3,"Portfolio 3 of momentum portfolios",monthly,01-Jan-1927,01-Jun-2020
+mom_p4,"Portfolio 4 of momentum portfolios",monthly,01-Jan-1927,01-Jun-2020
+mom_p5,"Portfolio 5 of momentum portfolios",monthly,01-Jan-1927,01-Jun-2020
+mom_p6,"Portfolio 6 of momentum portfolios",monthly,01-Jan-1927,01-Jun-2020
+mom_p7,"Portfolio 7 of momentum portfolios",monthly,01-Jan-1927,01-Jun-2020
+mom_p8,"Portfolio 8 of momentum portfolios",monthly,01-Jan-1927,01-Jun-2020
+mom_p9,"Portfolio 9 of momentum portfolios",monthly,01-Jan-1927,01-Jun-2020
+mom_p10,"Portfolio 10 of momentum portfolios",monthly,01-Jan-1927,01-Jun-2020
+mom,"Momentum factor",monthly,01-Jan-1927,01-Jun-2020
+NYFed_ERP,"ERP as constructed in Adrian, Crump and Moench (2013)",monthly,01-Jan-1964,01-Mar-2020
+CAPE,"Cyclycally Adjusted Price-Earnings ratio",monthly,01-Jan-1900,01-Aug-2020
+CPI,"Consumer Price Index",monthly,01-Jan-1900,01-Aug-2020
+D,"Nominal dividends for the S&P 500",monthly,01-Jan-1900,01-Aug-2020
+E,"Nominal earnings for the S&P 500",monthly,01-Jan-1900,01-Aug-2020
+P,"Nominal price for the S&P 500",monthly,01-Jan-1900,01-Aug-2020
+RateGS10,"10 year nominal treasury yield",monthly,01-Jan-1900,01-Aug-2020
+RealDividend,"Real dividends for the S&P 500",monthly,01-Jan-1900,01-Aug-2020
+RealEarnings,"Real earnings for the S&P 500",monthly,01-Jan-1900,01-Aug-2020
+RealPrice,"Real price for the S&P 500",monthly,01-Jan-1900,01-Aug-2020
+EPS,"Realized Earnings per Share for the S&P 500",annual,31-Dec-1992,31-Dec-2019
+EPS_y1,"Mean analyst forecast for Earnings per share for the S&P500 for the current year",monthly,14-May-1992,14-May-2020
+EPS_y2,"Mean analyst forecast for Earnings per share for the S&P500 for next year",monthly,14-May-1992,14-May-2020
+EPS_y3,"Mean analyst forecast for Earnings per share for the S&P500 for 2 years ahead",monthly,14-May-1992,14-May-2020
+EPS_y4,"Mean analyst forecast for Earnings per share for the S&P500 for 3 years ahead",monthly,14-May-1992,14-May-2020
+EPS_y5,"Mean analyst forecast for Earnings per share for the S&P500 for 4 years ahead",monthly,14-May-1992,20-Feb-2020
+FII10,"yield on a 10 year TIPS",monthly,01-Jan-2003,01-Jul-2020
+FII20,"yield on a 20 year TIPS",monthly,01-Jul-2004,01-Jul-2020
+FII30,"yield on a 30 year TIPS",monthly,01-Feb-2010,01-Jul-2020
+FII5,"yield on a 5 year TIPS",monthly,01-Jan-2003,01-Jul-2020
+FII7,"yield on a 7 year TIPS",monthly,01-Jan-2003,01-Jul-2020
+BETA0,"Bond Yields",monthly,14-Jun-1961,07-Aug-2020
+BETA1,"Bond Yields",monthly,14-Jun-1961,07-Aug-2020
+BETA2,"Bond Yields",monthly,14-Jun-1961,07-Aug-2020
+BETA3,"Bond Yields",monthly,14-Jun-1961,07-Aug-2020
+SVEN1F01,"Bond Yields",monthly,14-Jun-1961,07-Aug-2020
+SVEN1F04,"Bond Yields",monthly,14-Jun-1961,07-Aug-2020
+SVEN1F09,"Bond Yields",monthly,16-Aug-1971,07-Aug-2020
+SVENF01,"Bond Yields",monthly,14-Jun-1961,07-Aug-2020
+SVENF02,"Bond Yields",monthly,14-Jun-1961,07-Aug-2020
+SVENF03,"Bond Yields",monthly,14-Jun-1961,07-Aug-2020
+SVENF04,"Bond Yields",monthly,14-Jun-1961,07-Aug-2020
+SVENF05,"Bond Yields",monthly,14-Jun-1961,07-Aug-2020
+SVENF06,"Bond Yields",monthly,14-Jun-1961,07-Aug-2020
+SVENF07,"Bond Yields",monthly,14-Jun-1961,07-Aug-2020
+SVENF08,"Bond Yields",monthly,16-Aug-1971,07-Aug-2020
+SVENF09,"Bond Yields",monthly,16-Aug-1971,07-Aug-2020
+SVENF10,"Bond Yields",monthly,16-Aug-1971,07-Aug-2020
+SVENF11,"Bond Yields",monthly,15-Nov-1971,07-Aug-2020
+SVENF12,"Bond Yields",monthly,15-Nov-1971,07-Aug-2020
+SVENF13,"Bond Yields",monthly,15-Nov-1971,07-Aug-2020
+SVENF14,"Bond Yields",monthly,15-Nov-1971,07-Aug-2020
+SVENF15,"Bond Yields",monthly,15-Nov-1971,07-Aug-2020
+SVENF16,"Bond Yields",monthly,02-Jul-1981,07-Aug-2020
+SVENF17,"Bond Yields",monthly,02-Jul-1981,07-Aug-2020
+SVENF18,"Bond Yields",monthly,02-Jul-1981,07-Aug-2020
+SVENF19,"Bond Yields",monthly,02-Jul-1981,07-Aug-2020
+SVENF20,"Bond Yields",monthly,02-Jul-1981,07-Aug-2020
+SVENF21,"Bond Yields",monthly,25-Nov-1985,07-Aug-2020
+SVENF22,"Bond Yields",monthly,25-Nov-1985,07-Aug-2020
+SVENF23,"Bond Yields",monthly,25-Nov-1985,07-Aug-2020
+SVENF24,"Bond Yields",monthly,25-Nov-1985,07-Aug-2020
+SVENF25,"Bond Yields",monthly,25-Nov-1985,07-Aug-2020
+SVENF26,"Bond Yields",monthly,25-Nov-1985,07-Aug-2020
+SVENF27,"Bond Yields",monthly,25-Nov-1985,07-Aug-2020
+SVENF28,"Bond Yields",monthly,25-Nov-1985,07-Aug-2020
+SVENF29,"Bond Yields",monthly,25-Nov-1985,07-Aug-2020
+SVENF30,"Bond Yields",monthly,25-Nov-1985,07-Aug-2020
+SVENPY01,"Bond Yields",monthly,14-Jun-1961,07-Aug-2020
+SVENPY02,"Bond Yields",monthly,14-Jun-1961,07-Aug-2020
+SVENPY03,"Bond Yields",monthly,14-Jun-1961,07-Aug-2020
+SVENPY04,"Bond Yields",monthly,14-Jun-1961,07-Aug-2020
+SVENPY05,"Bond Yields",monthly,14-Jun-1961,07-Aug-2020
+SVENPY06,"Bond Yields",monthly,14-Jun-1961,07-Aug-2020
+SVENPY07,"Bond Yields",monthly,14-Jun-1961,07-Aug-2020
+SVENPY08,"Bond Yields",monthly,16-Aug-1971,07-Aug-2020
+SVENPY09,"Bond Yields",monthly,16-Aug-1971,07-Aug-2020
+SVENPY10,"Bond Yields",monthly,16-Aug-1971,07-Aug-2020
+SVENPY11,"Bond Yields",monthly,15-Nov-1971,07-Aug-2020
+SVENPY12,"Bond Yields",monthly,15-Nov-1971,07-Aug-2020
+SVENPY13,"Bond Yields",monthly,15-Nov-1971,07-Aug-2020
+SVENPY14,"Bond Yields",monthly,15-Nov-1971,07-Aug-2020
+SVENPY15,"Bond Yields",monthly,15-Nov-1971,07-Aug-2020
+SVENPY16,"Bond Yields",monthly,02-Jul-1981,07-Aug-2020
+SVENPY17,"Bond Yields",monthly,02-Jul-1981,07-Aug-2020
+SVENPY18,"Bond Yields",monthly,02-Jul-1981,07-Aug-2020
+SVENPY19,"Bond Yields",monthly,02-Jul-1981,07-Aug-2020
+SVENPY20,"Bond Yields",monthly,02-Jul-1981,07-Aug-2020
+SVENPY21,"Bond Yields",monthly,25-Nov-1985,07-Aug-2020
+SVENPY22,"Bond Yields",monthly,25-Nov-1985,07-Aug-2020
+SVENPY23,"Bond Yields",monthly,25-Nov-1985,07-Aug-2020
+SVENPY24,"Bond Yields",monthly,25-Nov-1985,07-Aug-2020
+SVENPY25,"Bond Yields",monthly,25-Nov-1985,07-Aug-2020
+SVENPY26,"Bond Yields",monthly,25-Nov-1985,07-Aug-2020
+SVENPY27,"Bond Yields",monthly,25-Nov-1985,07-Aug-2020
+SVENPY28,"Bond Yields",monthly,25-Nov-1985,07-Aug-2020
+SVENPY29,"Bond Yields",monthly,25-Nov-1985,07-Aug-2020
+SVENPY30,"Bond Yields",monthly,25-Nov-1985,07-Aug-2020
+SVENY01,"Bond Yields",monthly,14-Jun-1961,07-Aug-2020
+SVENY02,"Bond Yields",monthly,14-Jun-1961,07-Aug-2020
+SVENY03,"Bond Yields",monthly,14-Jun-1961,07-Aug-2020
+SVENY04,"Bond Yields",monthly,14-Jun-1961,07-Aug-2020
+SVENY05,"Bond Yields",monthly,14-Jun-1961,07-Aug-2020
+SVENY06,"Bond Yields",monthly,14-Jun-1961,07-Aug-2020
+SVENY07,"Bond Yields",monthly,14-Jun-1961,07-Aug-2020
+SVENY08,"Bond Yields",monthly,16-Aug-1971,07-Aug-2020
+SVENY09,"Bond Yields",monthly,16-Aug-1971,07-Aug-2020
+SVENY10,"Bond Yields",monthly,16-Aug-1971,07-Aug-2020
+SVENY11,"Bond Yields",monthly,15-Nov-1971,07-Aug-2020
+SVENY12,"Bond Yields",monthly,15-Nov-1971,07-Aug-2020
+SVENY13,"Bond Yields",monthly,15-Nov-1971,07-Aug-2020
+SVENY14,"Bond Yields",monthly,15-Nov-1971,07-Aug-2020
+SVENY15,"Bond Yields",monthly,15-Nov-1971,07-Aug-2020
+SVENY16,"Bond Yields",monthly,02-Jul-1981,07-Aug-2020
+SVENY17,"Bond Yields",monthly,02-Jul-1981,07-Aug-2020
+SVENY18,"Bond Yields",monthly,02-Jul-1981,07-Aug-2020
+SVENY19,"Bond Yields",monthly,02-Jul-1981,07-Aug-2020
+SVENY20,"Bond Yields",monthly,02-Jul-1981,07-Aug-2020
+SVENY21,"Bond Yields",monthly,25-Nov-1985,07-Aug-2020
+SVENY22,"Bond Yields",monthly,25-Nov-1985,07-Aug-2020
+SVENY23,"Bond Yields",monthly,25-Nov-1985,07-Aug-2020
+SVENY24,"Bond Yields",monthly,25-Nov-1985,07-Aug-2020
+SVENY25,"Bond Yields",monthly,25-Nov-1985,07-Aug-2020
+SVENY26,"Bond Yields",monthly,25-Nov-1985,07-Aug-2020
+SVENY27,"Bond Yields",monthly,25-Nov-1985,07-Aug-2020
+SVENY28,"Bond Yields",monthly,25-Nov-1985,07-Aug-2020
+SVENY29,"Bond Yields",monthly,25-Nov-1985,07-Aug-2020
+SVENY30,"Bond Yields",monthly,25-Nov-1985,07-Aug-2020
+TAU1,"Bond Yields",monthly,14-Jun-1961,07-Aug-2020
+TAU2,"Bond Yields",monthly,14-Jun-1961,07-Aug-2020

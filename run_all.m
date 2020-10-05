@@ -36,7 +36,6 @@ addpath(genpath([root_dir filesep 'Code' filesep 'project_scripts']))
 addpath(genpath([root_dir filesep 'Code' filesep 'stata_scripts']))
 addpath(genpath([root_dir filesep 'Code' filesep 'wrds_scripts']))
 
-
 %% creating initialization variables 
 
 % FRED api key 

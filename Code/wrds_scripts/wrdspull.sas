@@ -23,7 +23,8 @@ quit;
 
 Proc sql;
 	create table EPS_estimates2 as select 
-	ticker, oftic, statpers, measure, fiscalp, fpi, estflag, meanest, fpedats, actual
+	ticker, oftic, statpers, measure, fiscalp, fpi, estflag, meanest, 
+fpedats, actual
 	from ibes.statsum_epsint
 	where oftic="SPX" and fiscalp="ANN"and measure="EPS";
 Quit; 
