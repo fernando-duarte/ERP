@@ -28,7 +28,9 @@ cd(root_dir)
 
 %%% Shiller
 filename = 'ie_data.xls';
-shiller = readtable(filename,'Sheet',4, 'TreatAsEmpty', {'NA', '.', ''});
+
+shiller = readtable(filename,'sheet','Data', 'TreatAsEmpty', {'NA', '.', ''});
+
 shiller = shiller(1:end-3, 1:13);                                           % remove the last blank rows and restrict columns
 shiller.Properties.VariableNames = {'date', 'P', 'D', 'E', 'CPI', ...
     'date2', 'RateGS10', 'RealPrice', 'RealDividend', ...

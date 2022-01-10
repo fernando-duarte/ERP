@@ -151,7 +151,7 @@ ff_ts.Properties.VariableUnits = c;
 clear c
 
 % momentum factor
-filename = [input_dir filesep 'F-F_Momentum_Factor.TXT'];
+filename = [input_dir filesep 'F-F_Momentum_Factor.txt'];
 fid = fopen(filename); % open files
 
 % reads file until it finds headers
@@ -316,7 +316,7 @@ clear FRBNY_ERP_QS data dates headers
 %% get shiller data
 
 filename = [input_dir filesep 'ie_data.xls'];
-shiller = readtable(filename,'Sheet',4, 'TreatAsEmpty', {'NA', '.', ''});
+shiller = readtable(filename,'Sheet','Data', 'TreatAsEmpty', {'NA', '.', ''});
 shiller = shiller(:, 1:13);
 shiller.Properties.VariableNames = {'date', 'P', 'D', 'E', 'CPI', ...
     'date2', 'RateGS10', 'RealPrice', 'RealDividend', ...
