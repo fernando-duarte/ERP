@@ -11,8 +11,8 @@ clear; clc;
 
 % main directory
 % pick the folder where this file is located
-root_dir = [filesep 'home' filesep 'rcerxr21' filesep 'FernandoWork' ...
-    filesep 'ERP_GIT']; 
+root_dir = [filesep 'home' filesep 'rcemxa30' filesep 'Fernando' ...
+    filesep 'ERP-develop']; 
 cd(root_dir) % do not change directory after running this line or 
              % code will fail when running wrds downloads in download_data
 
@@ -39,7 +39,7 @@ addpath(genpath([root_dir filesep 'Code' filesep 'wrds_scripts']))
 %% creating initialization variables 
 
 % FRED api key 
-api = '35ee7b54bc4bf63e6e61903112994800';
+api = '06c64a7cb3b82bbde41c84e46da2a232';
 
 % writes to the api.txt file with the provided API key
 apiTXT = fopen('Input/api.txt', 'wt');
@@ -48,16 +48,15 @@ fprintf(apiTXT,  '%s', api); fclose(apiTXT);
 % Downloadable url's and folder specifications
 
 % pathing in Sas Studio WRDS
-wrds_code_dir = '/home/frb-ny/fedraj/WRDS/Code';
-wrds_out_dir = '/home/frb-ny/fedraj/WRDS/Output';
+wrds_code_dir = '/home/frb-ny/mathias_andler/WRDS/Code';
+wrds_out_dir = '/home/frb-ny/mathias_andler/WRDS/Output';
 
 % Connect to the WRDS server
-wrds_username = 'fedraj';
-wrds_password = 'Feddata2020$%';
+wrds_username = 'mathias_andler';
+wrds_password = 'Fedwrds2022!!';
 
 % The Bureau of Economic Analysis website 
-beaURL = 'https://apps.bea.gov/histdata/Releases/GDP_and_PI/2020/Q1/Third_June-26-2020/Section2all_xls.xlsx';
-
+beaURL = 'https://apps.bea.gov/histdata/Releases/GDP_and_PI/2021/Q3/Third_December-23-2021/Section2all_xls.xlsx';
 % exporting variable declarations
 save Temp/Init.mat wrds_code_dir wrds_out_dir wrds_username ...
     wrds_password beaURL

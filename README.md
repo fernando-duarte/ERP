@@ -93,10 +93,9 @@ The code base is mapped as a linear series of Matlab file, outlined below:
 
 5. In the `run_all.m` file we are going to update the beaURL variable that reflects National Accounts (NIPA) data. Go to the Bureau of Economic Analysis website [here](https://apps.bea.gov/histdata/histChildLevels.cfm?HMI=7). Select (click) the most recent version of data (e.g. 2020, Q1) and then under the main tab right click on Section 2. Select “copy link address" and then paste that in place of the variable assignment.
 
-6. Run the `haver_data.do` Stata file locally (VMWare connected to SAN, but not using NoMachine), located in `Code\san_scripts\` this should produce a file named `tb1m.csv`. Now load up WinSCP on your machine, navigate to the folder where the data was downloaded on the SAN and copy that data to the `\Input` folder in the project.
+6. Run the `haver_data.do` Stata file locally (with VMWare connected to SAN, but not using NoMachine), located in `Code\san_scripts\` this should produce a file named `tb1m.csv`. Now load up WinSCP on your machine, navigate to the folder where the data was downloaded on the SAN and copy that data to the `\Input` folder in the project.
 
-7. Go to the CFO survey website, located [here](https://cfosurvey.fuqua.duke.edu/release/). Go to the current year and quarter and select United States High-Level Results. Then find the part in the pdf where they report the expected average annual S&P500 return over the next 1 and 10 years. The precise questions are: *“Over the next 10 years, I expect the average annual S&P 500 return will be: Expected return"* and *“Over the next year, I expect the average annual S&P 500 return will be: Expected return."* Add the mean surveyed return and the number of total surveyed to the `\Input\cfo_data.csv` for those two questions.
-
+7. Go to the CFO survey website, located [here](https://www.richmondfed.org/research/national_economy/cfo_survey/data_and_results). Download Full Results to get expected average S&P500 returns and add them to \Input\cfo_data.csv
 8. Run the `run_all.m` file in the RAN terminal, interactive environment or through the batch environment as follows:
     ```
     % %    e.g. running code via batch on the FRBNY RAN HPC Cluster
@@ -117,7 +116,7 @@ The code base is mapped as a linear series of Matlab file, outlined below:
   
 ## 7	Potential Extensions
 1. Automate the updates for the tb1m.csv (this may conflict with security privileges)
-
+2. Automate updating the cfo_survey (make it similar to beaURL where it's almost automatic)
 ## 8	Contributors
 - Rajesh Rao (Research Analyst 22’)
 - Charlie Smith (Research Analyst 21’)
