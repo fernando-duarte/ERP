@@ -6,7 +6,7 @@ eps_4yr_ahead,"ThomsonReuters I/B/E/S",monthly,01-Jun-1992,01-Jan-2022,Mean anal
 dp,"Shiller",monthly,01-Jan-1900,01-Jan-2022,Dividend price ratio
 ep,"Shiller",monthly,01-Jan-1900,01-Jan-2022,Earnings price ratio
 inflation,"Shiller",monthly,01-Jan-1900,01-Jan-2022,Log change in CPI
-term_spread,"Fed Board",monthly,01-Sep-1971,01-Jan-2022,10 year minus 1 year yield
+term_spread,"Fed Board",monthly,01-Sep-1971,01-Feb-2022,10 year minus 1 year yield
 share_equity_issuance,"Jeffrey Wurgler",monthly,01-Jan-1958,01-Dec-2018,Share of equity issuance
 book_per_share,"Compustat",monthly,01-Jan-1977,01-Jan-2021,Assign to each month of the year the value of books_per_share in December of the same year (as in Goyal and Welch)
 lag_book_per_share,"Compustat",monthly,01-Jan-1978,01-Jan-2022,Assign to each month of the year the value of books_per_share in December of the previous year

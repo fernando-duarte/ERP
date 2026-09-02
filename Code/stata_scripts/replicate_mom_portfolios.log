@@ -22,10 +22,10 @@ Notes:
 . do "replicate_mom_portfolios.do" 
 
 . cd ..
-/home/rcerxr21/FernandoWork/ERP_GIT/Code
+/home/rcemxa30/Fernando/ERP-develop/Code
 
 . cd ..
-/home/rcerxr21/FernandoWork/ERP_GIT
+/home/rcemxa30/Fernando/ERP-develop
 
 . 
 . global dir `c(pwd)'
@@ -40,10 +40,10 @@ Notes:
 . * Clean CRSP data
 . *****************************************************************************
 . import delimited using "${indir}/crsp_m.txt", delim(" ") varnames(1) clear
-Note:  233,045,549 binary zeros were ignored in the source file.  The first
-       instance occurred on line 34,300.  Binary zeros are not valid in text
+Note:  220,036,847 binary zeros were ignored in the source file.  The first
+       instance occurred on line 309,405.  Binary zeros are not valid in text
        data.  Inspect your data carefully.
-(9 vars, 34,300 obs)
+(9 vars, 309,405 obs)
 
 . 
 . tostring date, replace
@@ -52,7 +52,7 @@ date was long now str8
 . gen date2 = date(date,"YMD")
 
 . replace date2 = mofd(date2)
-(34,282 real changes made)
+(309,266 real changes made)
 
 . format date2 %tmCCYYNN
 
@@ -64,43 +64,43 @@ date was long now str8
 
 . 
 . replace ret = "0" if ret == ""
-(103 real changes made)
+(459 real changes made)
 
 . replace ret = "" if inlist(ret,"E","D","C","B","A")
-(682 real changes made)
+(7,521 real changes made)
 
 . destring ret, replace
 ret: all characters numeric; replaced as double
-(682 missing values generated)
+(7521 missing values generated)
 
 . 
 . *****************************************************************************
 . * Generate ME and lagged ME
 . *****************************************************************************
 . gen prc_adj = prc
-(613 missing values generated)
+(6,137 missing values generated)
 
 . replace prc_adj = altprc if mi(prc_adj)
-(36 real changes made)
+(290 real changes made)
 
 . 
 . * Calculate ME using prices adjusted by altprc
 . gen ME = abs(prc_adj) * shrout if prc_adj ~= 0 & shrout ~= 0
-(577 missing values generated)
+(5,847 missing values generated)
 
 . duplicates drop permno date prc, force
 
 Duplicates in terms of permno date prc
 
-(8,254 observations deleted)
+(59,605 observations deleted)
 
 . tsset permno date
        panel variable:  permno (unbalanced)
-        time variable:  date, 192512 to 201912
+        time variable:  date, 192512 to 202012, but with gaps
                 delta:  1 month
 
 . gen l_ME = l.ME
-(559 missing values generated)
+(6,436 missing values generated)
 
 . 
 . *****************************************************************************
@@ -109,14 +109,14 @@ Duplicates in terms of permno date prc
 . bys permco date: egen sum_ME = sum(l_ME)
 
 . gen ret_vw = ret * l_ME / sum_ME if sum_ME ~= 0
-(582 missing values generated)
+(6,694 missing values generated)
 
 . bys permco date: egen avg_ret_vw = sum(ret_vw) if ~mi(ret_vw)   // value-weig
 > hted
-(582 missing values generated)
+(6694 missing values generated)
 
 . replace ret = avg_ret_vw
-(23,141 real changes made, 42 to missing)
+(220,102 real changes made, 243 to missing)
 
 . 
 . *****************************************************************************
@@ -126,11 +126,11 @@ Duplicates in terms of permno date prc
 
 Duplicates in terms of permco date
 
-(0 observations are duplicates)
+(97 observations deleted)
 
 . tsset permco date
        panel variable:  permco (unbalanced)
-        time variable:  date, 192512 to 201912
+        time variable:  date, 192512 to 202012, but with gaps
                 delta:  1 month
 
 . sort permco date
@@ -140,29 +140,29 @@ Duplicates in terms of permco date
 . * Calculate prior 2-12 returns
 . *****************************************************************************
 . gen ret_12_2 = (1 + L12.ret)
-(2,193 missing values generated)
+(24,804 missing values generated)
 
 . forval i = 2 / 11 {
   2.         replace ret_12_2 = ret_12_2 * (1 + L`i'.ret) 
   3. }
-(22,443 real changes made, 99 to missing)
-(22,354 real changes made, 5 to missing)
-(22,356 real changes made, 5 to missing)
-(22,358 real changes made, 5 to missing)
-(22,359 real changes made, 3 to missing)
-(22,362 real changes made, 2 to missing)
-(22,357 real changes made, 3 to missing)
-(22,359 real changes made, 3 to missing)
-(22,369 real changes made, 2 to missing)
-(22,372 real changes made, 3 to missing)
+(212,027 real changes made, 1,053 to missing)
+(211,053 real changes made, 60 to missing)
+(211,023 real changes made, 57 to missing)
+(211,006 real changes made, 50 to missing)
+(210,979 real changes made, 46 to missing)
+(210,971 real changes made, 41 to missing)
+(210,947 real changes made, 31 to missing)
+(210,929 real changes made, 28 to missing)
+(210,917 real changes made, 17 to missing)
+(210,911 real changes made, 10 to missing)
 
 . replace ret_12_2 = (ret_12_2 - 1) * 100
-(23,723 real changes made)
+(223,506 real changes made)
 
 . 
 . * replace with missing value if the criterion aren't met
 . replace ret_12_2 = . if mi(l13.prc) | mi(l2.ret) | mi(l_ME) | mi(prc)
-(46 real changes made, 46 to missing)
+(402 real changes made, 402 to missing)
 
 . 
 . *****************************************************************************
@@ -176,7 +176,7 @@ Duplicates in terms of permco date
 . 
 . * keep if traded in NYSE, AMEX or Nasdaq only
 . keep if exchcd==1 | exchcd==2 | exchcd==3
-(401 observations deleted)
+(4,810 observations deleted)
 
 . 
 . *****************************************************************************
@@ -186,7 +186,7 @@ Duplicates in terms of permco date
 
 . import delimited "${indir}/Prior_2-12_Breakpoints.txt", ///
 > delimiter(space, collapse) varnames(nonames) rowrange(4) clear 
-(22 vars, 1,125 obs)
+(22 vars, 1,140 obs)
 
 . 
 . rename v2 count
@@ -203,7 +203,7 @@ v1 was long now str6
 . gen date = date(v1,"YM")
 
 . replace date = ym(year(date),month(date))
-(1,124 real changes made)
+(1,139 real changes made)
 
 . format date %tm
 
@@ -221,18 +221,18 @@ file temp.tmp saved
 
     Result                           # of obs.
     -----------------------------------------
-    not matched                           107
-        from master                       107  
+    not matched                           935
+        from master                       935  
         from using                          0  
 
-    matched                            25,537  
+    matched                           243,957  
     -----------------------------------------
 
 . 
 . sort permco date
 
 . gen p1 = 1 if ret_12_2 <= prct10 & ~mi(prct10)
-(21,650 missing values generated)
+(206,423 missing values generated)
 
 . forval i = 2 / 10 {
   2.         local percentile = `i' * 10
@@ -240,19 +240,19 @@ file temp.tmp saved
   4.         gen p`i' = 1 if ret_12_2 > prct`percentile10' & ret_12_2 <= prct`p
 > ercentile'
   5. }
-(23,165 missing values generated)
-(23,609 missing values generated)
-(23,690 missing values generated)
-(23,705 missing values generated)
-(23,827 missing values generated)
-(23,752 missing values generated)
-(23,713 missing values generated)
-(23,479 missing values generated)
-(22,296 missing values generated)
+(221,075 missing values generated)
+(224,783 missing values generated)
+(226,485 missing values generated)
+(226,924 missing values generated)
+(227,991 missing values generated)
+(228,014 missing values generated)
+(227,018 missing values generated)
+(224,370 missing values generated)
+(213,726 missing values generated)
 
 . 
 . replace ret = ret * 100
-(23,920 real changes made)
+(228,367 real changes made)
 
 . 
 . *****************************************************************************
@@ -271,27 +271,27 @@ file temp.tmp saved
   7.         save "${indir}/10_Portfolios_Prior_12_2_Equal_weighted", replace
   8.         restore
   9. }
-(note: file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_
+(note: file /home/rcemxa30/Fernando/ERP-develop/Input/10_Portfolios_Prior_12_2_
 > Equal_weighted.dta not found)
-file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Equal_w
+file /home/rcemxa30/Fernando/ERP-develop/Input/10_Portfolios_Prior_12_2_Equal_w
 > eighted.dta saved
-file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Equal_w
+file /home/rcemxa30/Fernando/ERP-develop/Input/10_Portfolios_Prior_12_2_Equal_w
 > eighted.dta saved
-file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Equal_w
+file /home/rcemxa30/Fernando/ERP-develop/Input/10_Portfolios_Prior_12_2_Equal_w
 > eighted.dta saved
-file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Equal_w
+file /home/rcemxa30/Fernando/ERP-develop/Input/10_Portfolios_Prior_12_2_Equal_w
 > eighted.dta saved
-file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Equal_w
+file /home/rcemxa30/Fernando/ERP-develop/Input/10_Portfolios_Prior_12_2_Equal_w
 > eighted.dta saved
-file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Equal_w
+file /home/rcemxa30/Fernando/ERP-develop/Input/10_Portfolios_Prior_12_2_Equal_w
 > eighted.dta saved
-file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Equal_w
+file /home/rcemxa30/Fernando/ERP-develop/Input/10_Portfolios_Prior_12_2_Equal_w
 > eighted.dta saved
-file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Equal_w
+file /home/rcemxa30/Fernando/ERP-develop/Input/10_Portfolios_Prior_12_2_Equal_w
 > eighted.dta saved
-file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Equal_w
+file /home/rcemxa30/Fernando/ERP-develop/Input/10_Portfolios_Prior_12_2_Equal_w
 > eighted.dta saved
-file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Equal_w
+file /home/rcemxa30/Fernando/ERP-develop/Input/10_Portfolios_Prior_12_2_Equal_w
 > eighted.dta saved
 
 . 
@@ -309,36 +309,36 @@ file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Equal_w
   8.         restore
   9. }
 (analytic weights assumed)
-(note: file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_
+(note: file /home/rcemxa30/Fernando/ERP-develop/Input/10_Portfolios_Prior_12_2_
 > Value_weighted.dta not found)
-file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Value_w
+file /home/rcemxa30/Fernando/ERP-develop/Input/10_Portfolios_Prior_12_2_Value_w
 > eighted.dta saved
 (analytic weights assumed)
-file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Value_w
+file /home/rcemxa30/Fernando/ERP-develop/Input/10_Portfolios_Prior_12_2_Value_w
 > eighted.dta saved
 (analytic weights assumed)
-file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Value_w
+file /home/rcemxa30/Fernando/ERP-develop/Input/10_Portfolios_Prior_12_2_Value_w
 > eighted.dta saved
 (analytic weights assumed)
-file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Value_w
+file /home/rcemxa30/Fernando/ERP-develop/Input/10_Portfolios_Prior_12_2_Value_w
 > eighted.dta saved
 (analytic weights assumed)
-file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Value_w
+file /home/rcemxa30/Fernando/ERP-develop/Input/10_Portfolios_Prior_12_2_Value_w
 > eighted.dta saved
 (analytic weights assumed)
-file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Value_w
+file /home/rcemxa30/Fernando/ERP-develop/Input/10_Portfolios_Prior_12_2_Value_w
 > eighted.dta saved
 (analytic weights assumed)
-file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Value_w
+file /home/rcemxa30/Fernando/ERP-develop/Input/10_Portfolios_Prior_12_2_Value_w
 > eighted.dta saved
 (analytic weights assumed)
-file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Value_w
+file /home/rcemxa30/Fernando/ERP-develop/Input/10_Portfolios_Prior_12_2_Value_w
 > eighted.dta saved
 (analytic weights assumed)
-file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Value_w
+file /home/rcemxa30/Fernando/ERP-develop/Input/10_Portfolios_Prior_12_2_Value_w
 > eighted.dta saved
 (analytic weights assumed)
-file /home/rcerxr21/FernandoWork/ERP_GIT/Input/10_Portfolios_Prior_12_2_Value_w
+file /home/rcemxa30/Fernando/ERP-develop/Input/10_Portfolios_Prior_12_2_Value_w
 > eighted.dta saved
 
 . 
